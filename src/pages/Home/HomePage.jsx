@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { Button } from 'primereact/button';
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Header from '../Componentes/Header';
 import './App.css'
+import Footer from '../Componentes/Footer';
 
-function App() {
+function HomePage() {
   const [count, setCount] = useState(0)
 
   function buscarUsuario() {
@@ -20,6 +20,7 @@ function App() {
 
   return (
     <>
+      <Header/>
       <div className="container mt-5">
         <div className="row mt-5">
           <div className="col text-center">
@@ -36,8 +37,9 @@ function App() {
           </div>
         </div>
       </div>
+      <Footer/>
     </>
   )
 }
 
-export default App
+export default HomePage
