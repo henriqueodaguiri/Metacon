@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Button } from 'primereact/button';
 import '../Home/App.css'
-import Header from '../Componentes/Header';
-import Footer from '../Componentes/Footer';
+import Header from '../../assets/Componentes/Header';
+import Footer from '../../assets/Componentes/Footer';
 
 function Login() {
 
@@ -11,7 +11,6 @@ function Login() {
       <Header/>
       <div className="container justify-content-center align-items-center mt-5 py-5">
         <div className="row justify-content-center">
-          <div className="col-12 col-md-6 col-lg-4"> 
             <div className="card shadow-sm">
               <h5 className="card-header bg-dark text-white">Entre em sua conta</h5> 
               <div className="card-body">
@@ -34,7 +33,6 @@ function Login() {
                 </form>
               </div>
             </div>
-          </div>
         </div>
       </div>
       <Footer/>

@@ -1,7 +1,7 @@
+import './bootstrap.min.css'
 function Header(){
     return (
         <>
-          <header data-bs-theme="dark">
             <div className="navbar navbar-dark bg-dark shadow-sm">
             <div className="container">
                 <a href="/" className="navbar-brand d-flex align-items-center">
@@ -24,7 +24,6 @@ function Header(){
                 </div>
             </div>
             </div>
-          </header>
         </>
     )
 }

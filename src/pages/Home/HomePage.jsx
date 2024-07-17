@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Button } from 'primereact/button';
-import Header from '../Componentes/Header';
 import './App.css'
-import Footer from '../Componentes/Footer';
+import Header from '../../assets/Componentes/Header';
+import Footer from '../../assets/Componentes/Footer';
 
 function HomePage() {
   const [count, setCount] = useState(0)

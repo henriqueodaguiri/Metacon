@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Button } from 'primereact/button';
 import '../Home/App.css'
-import Header from '../Componentes/Header';
-import Footer from '../Componentes/Footer';
+import Header from '../../assets/Componentes/Header';
+import Footer from '../../assets/Componentes/Footer';
 
 function RegisterPage() {
 
@@ -11,7 +11,6 @@ function RegisterPage() {
       <Header/>
       <div className="container justify-content-center align-items-center mt-5 py-5">
         <div className="row justify-content-center">
-          <div className="col-12 col-md-6 col-lg-4">
             <div className="card shadow-sm">
               <h5 className="card-header bg-dark text-white">Crie sua Conta</h5> 
               <div className="card-body">
@@ -34,7 +33,6 @@ function RegisterPage() {
                 </form>
               </div>
             </div>
-          </div>
         </div>
       </div>
       <Footer/>
