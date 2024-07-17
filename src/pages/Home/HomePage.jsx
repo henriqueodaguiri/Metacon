@@ -30,9 +30,9 @@ function HomePage() {
               <hr className="my-4"/>
               <p>Descubra mais sobre as funcionalidades e como pode ajudar você.</p>
               {console.log("teste")}
-              <Button label="Comece agora" link onClick={() => buscarUsuario()}/>
+              <a className="btn btn-dark btn-lg btn-info" href="/login" role="button">Comece agora</a>
               <br></br>
-              <a className="btn btn-primary btn-lg btn-info" href="https://primereact.org/button/" role="button">Já tem uma conta? Login</a>
+              <a className="btn" href="/login" role="button">Já tem uma conta? Login</a>
             </div>
           </div>
         </div>
