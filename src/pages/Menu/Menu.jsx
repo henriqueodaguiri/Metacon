@@ -1,7 +1,7 @@
 import Footer from "../../assets/Componentes/Footer"
 import Header from "../../assets/Componentes/Header"
 
-function Dashboard(){
+function Menu(){
     return (
         <>
         <Header/>
@@ -94,4 +94,4 @@ function Dashboard(){
     )
 }
 
-export default Dashboard
+export default Menu

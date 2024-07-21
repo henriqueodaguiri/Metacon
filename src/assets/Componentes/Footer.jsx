@@ -1,9 +1,6 @@
-import Theme from "./Theme"
-import './bootstrap.min.css'
 function Footer(){
     return (
         <>
-            <Theme/>
             <footer className="text-body-secondary py-5">
                 <div className="container">
                     <p className="float-end mb-1">

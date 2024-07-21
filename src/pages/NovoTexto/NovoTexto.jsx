@@ -1,8 +1,21 @@
 import Footer from "../../assets/Componentes/Footer"
+import Formulario from "../../assets/Componentes/formulario";
 import Header from "../../assets/Componentes/Header"
 
 function NovoTexto(){
-    return (
+  const newReadingFields = [
+    { name: 'title', label: 'Titulo', type: 'text', placeholder:'Titulo'},
+    { name: 'text', label: 'Texto', type: 'text', placeholder:'Texto'},
+    { name: 'question', label:'Pergunta', type:'text', placeholder:'Pergunta'},
+    { name: 'thumbnail', label:'Inserir imagem', type:'file'}
+  ];
+
+  const handleSubmitnewReading = (formData) => {
+    // Lógica de envio específica para a página de contato
+    console.log('Dados do formulário de login:', formData);
+  };  
+  
+  return (
       <>
       <Header/>
         <main>
@@ -14,25 +27,7 @@ function NovoTexto(){
     <div className="row justify-content-center">
         <div className="card shadow-sm">
           <div className="card-body">
-            <form action="/new-reading" method="post">
-              <div className="mb-3">
-                <label for="title" className="form-label">Titulo</label>
-                <input type="text" placeholder="Titulo" className="form-control" id="title" name="Titulo" required/>
-              </div>
-              <div className="mb-3">
-                <label for="text" className="form-label">Texto</label>
-                <input type="text" placeholder="Texto" className="form-control" id="text" name="Texto" required/>
-              </div>
-              <div className="mb-3">
-                <label for="new-question" className="form-label">Pergunta</label>
-                <input type="text" placeholder="Nova Pergunta" className="form-control" id="new-question" name="new-question" required/>
-              </div>
-              <div className="mb-3">
-                <label for="thumbnail" className="form-label">Inserir Imagem</label><br></br>
-                <input type="file" className="btn btn-sucess" id="thumbnail" name="Thumbnail" required multiple/>
-              </div>
-              <button type="submit" className="btn btn-bd-primary btn-primary w-100 text-white">Criar</button> 
-            </form>
+            <Formulario fields={newReadingFields} onSubmit={handleSubmitnewReading}/>
           </div>
         </div>
     </div>

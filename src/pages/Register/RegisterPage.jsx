@@ -3,8 +3,20 @@ import { Button } from 'primereact/button';
 import '../Home/App.css'
 import Header from '../../assets/Componentes/Header';
 import Footer from '../../assets/Componentes/Footer';
+import Formulario from '../../assets/Componentes/formulario';
 
 function RegisterPage() {
+  const registerFields = [
+    { name: 'email', label: 'Email', type: 'email', placeholder:'Email'},
+    { name: 'password', label: 'Senha', type: 'password', placeholder:'Senha'},
+    { name: 'confirmation', label:'Confirmar senha', type:'password', placeholder:'Confirme sua senha'}
+  ];
+
+  const handleSubmitRegister = (formData) => {
+    // Lógica de envio específica para a página de contato
+    console.log('Dados do formulário de login:', formData);
+  };
+
 
   return (
     <>
@@ -14,23 +26,7 @@ function RegisterPage() {
             <div className="card shadow-sm">
               <h5 className="card-header bg-dark text-white">Crie sua Conta</h5> 
               <div className="card-body">
-                <form action="/register" method="post"> 
-                  <div className="mb-3">
-                    <label for="email" className="form-label">Email</label>
-                    <input type="email" className="form-control" id="email" name="email" required/> 
-                  </div>
-                  <div className="mb-3">
-                    <label for="password" className="form-label">Senha</label>
-                    <input type="password" className="form-control" id="password" name="password" required/>
-                  </div>
-                  <div className="mb-3">
-                    <label for="password-confirmation" className="form-label">Confirme sua Senha</label>
-                    <input type="password" className="form-control" id="password-confirmation" name="password-confirmation" required/>
-                  </div>
-                  <div className="mb-3">
-                    <button type="submit" className="btn btn-bd-primary btn-block btn-primary w-100 text-white">Registrar</button>
-                  </div>   
-                </form>
+                <Formulario fields={registerFields} onSubmit={handleSubmitRegister}/>
               </div>
             </div>
         </div>

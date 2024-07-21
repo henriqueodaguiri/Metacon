@@ -1,10 +1,17 @@
-import { useState } from 'react'
-import { Button } from 'primereact/button';
-import '../Home/App.css'
 import Header from '../../assets/Componentes/Header';
 import Footer from '../../assets/Componentes/Footer';
+import Formulario from '../../assets/Componentes/formulario';
 
 function Login() {
+  const loginFields = [
+    { name: 'email', label: 'Email', type: 'email' , placeholder:'Email'},
+    { name: 'password', label: 'Senha', type: 'password', placeholder:'Senha' }
+  ];
+
+  const handleSubmitLogin = (formData) => {
+    // Lógica de envio específica para a página de contato
+    console.log('Dados do formulário de login:', formData);
+  };
 
   return (
     <>
@@ -14,23 +21,13 @@ function Login() {
             <div className="card shadow-sm">
               <h5 className="card-header bg-dark text-white">Entre em sua conta</h5> 
               <div className="card-body">
-                <form action="/login" method="post">
-                  <div className="mb-3"> 
-                    <label for="email" className="form-label">Email ou usuário</label>
-                    <input type="text" className="form-control" id="email" name="email" required/>
-                  </div>
-                  <div className="mb-3"> 
-                    <label for="password" className="form-label">Senha</label>
-                    <input type="password" className="form-control" id="password" name="password" required/>
-                  </div>
-                  <button type="submit" className="btn btn-bd-primary btn-primary w-100 text-white">Log in</button> 
+                <Formulario fields={loginFields} onSubmit={handleSubmitLogin}/>
                   <div className="mt-4">
                     <a href="/esqueceu-senha" className="text-decoration-none">Esqueceu sua senha?</a> 
                   </div>
                   <div className="mt-2 text-center">
                     <a href="/register-page" className="text-decoration-none">Não tem conta? Registre-se</a>
                   </div>
-                </form>
               </div>
             </div>
         </div>
