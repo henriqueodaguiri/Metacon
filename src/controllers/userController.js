@@ -1,16 +1,18 @@
-const { getAllUsers } = require("@/services/userService");
+const userService = require("@/services/userService");
 const createResponse = require("@/lib/responseHelper");
-const handleError = require("@/lib/errorHandler");
 
 const fetchUsers = async (req) => {
-  try {
-    const users = await getAllUsers();
-    return createResponse(users);
-  } catch (error) {
-    return handleError(error);
-  }
+  const users = await userService.getAllUsers();
+  return createResponse({ body: users });
+};
+
+const create = async (req) => {
+  const { name, email, password } = await req.json();
+  await userService.create({ name, email, password });
+  return createResponse({ status: 201 });
 };
 
 module.exports = {
   fetchUsers,
+  create
 };

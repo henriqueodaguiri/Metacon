@@ -7,7 +7,7 @@ async function login(req) {
   try {
     const { email, password } = await req.json();
     const { user, token } = await authenticateUser(email, password);
-    const response = createResponse({ user }); 
+    const response = createResponse({ body: { user } }); 
     response.headers.append("Set-Cookie", `token=${token}; HttpOnly; Path=/; Max-Age=${EXPIRES_IN}`);
 
     return response;
@@ -17,7 +17,7 @@ async function login(req) {
 };
 
 async function logout() {
-  const response = createResponse({ message: "Logged out" }); 
+  const response = createResponse({ body: { message: "Logged out" } }); 
   response.headers.append("Set-Cookie", "token=; HttpOnly; Path=/; Max-Age=0");
 
   return response;

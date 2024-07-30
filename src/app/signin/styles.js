@@ -22,7 +22,7 @@ export const LoginContainer = styled.div`
   justify-content: center;
   gap: 2rem;
   padding: 4rem;
-  background-color: white;
+  background-color: ${({ theme }) => theme.COLORS.WHITE };
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.5);
 

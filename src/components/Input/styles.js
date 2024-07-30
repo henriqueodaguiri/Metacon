@@ -9,6 +9,7 @@ export const Container = styled.div`
 `;
 
 export const InputElement = styled.input`
+  background-color: transparent;
   border: none;
   padding-left: 0.8rem;
 `;

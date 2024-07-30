@@ -1,4 +1,4 @@
-function createResponse(body = null, status = 200, headers = { "Content-Type": "application/json" }) {
+function createResponse({ body = null, status = 200, headers = { "Content-Type": "application/json" } }) {
   const responseOptions = {
     status,
     headers,

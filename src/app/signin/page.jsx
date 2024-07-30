@@ -33,11 +33,10 @@ const SignIn = () => {
   return (
     <Container>
       <WallpaperContainer>
-        <Image
+      <Image
           src={hero}
           alt="Hero Image"
-          layout="fill"
-          // objectFit="contain"
+          fill
           quality={100}
         />
       </WallpaperContainer>
