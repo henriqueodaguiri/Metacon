@@ -1,20 +1,20 @@
+import handleError from "@/lib/errorHandler";
+import { verifyToken } from "@/middleware/authMiddleware";
 const userController = require("@/controllers/userController");
-const { verifyToken } = require("@/middleware/authMiddleware");
-const errorHandler = require("@/lib/errorHandler");
-
-export async function GET(req) {
-  try {
-    verifyToken(req);
-    return userController.fetchUsers(req);
-  } catch (error) {
-    return errorHandler(error);
-  }
-}
 
 export async function POST(req) {
   try {
     return await userController.create(req);
-  } catch (error) {
-    return errorHandler(error);
+  } catch(error) {
+    return handleError(error);
+  }
+}
+
+export async function PUT(req) {
+  try {
+    const { userId } =  verifyToken(req);
+    return await userController.update(req, userId);
+  } catch(error) {
+    return handleError(error);
   }
 }

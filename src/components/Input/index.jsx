@@ -1,3 +1,4 @@
+"use client";
 import { Container, InputElement } from "./styles";
 
 export function Input({icon: Icon, ...rest}) {

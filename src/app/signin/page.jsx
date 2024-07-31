@@ -17,13 +17,6 @@ const SignIn = () => {
   const [password, setPassword] = useState("");
   const { user, login } = useAuth();
 
-  async function handleLogin() {
-    const user = await login(email, password);
-    if(user) {
-      window.location.reload();
-    }
-  }
-
   useEffect(() => {
     if(user) {
       router.push("/");
@@ -38,6 +31,7 @@ const SignIn = () => {
           alt="Hero Image"
           fill
           quality={100}
+          priority
         />
       </WallpaperContainer>
       <LoginContainer>
@@ -57,7 +51,8 @@ const SignIn = () => {
         
         <Button
           title={"Entrar"}
-          onClick={handleLogin}
+          onClick={() => login(email, password)}
+          width={"100%"}
         />
 
         <Link href="/signup">

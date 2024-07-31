@@ -10,13 +10,14 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { api } from "@/lib/api";
+import Link from "next/link";
 
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
 
   function validateInput() {
@@ -95,7 +96,11 @@ const SignUp = () => {
         <Button
           title={"Cadastrar"}
           onClick={handleSignUp}
+          width={"100%"}
         />
+        <Link href="/">
+          Já tenho cadastro
+        </Link>
       </SignUpContainer>
     </Container>
   );

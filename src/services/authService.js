@@ -6,7 +6,7 @@ const AppError = require("@/lib/appError");
 const SECRET_KEY = process.env.JWT_SECRET_KEY || "default";
 const EXPIRES_IN = process.env.EXPIRES_IN || "3600";
 
-async function authenticateUser(email, password) {
+async function authenticate(email, password) {
   const user = await prisma.user.findUnique({
     where: { email }
   });
@@ -31,5 +31,5 @@ async function authenticateUser(email, password) {
 }
 
 module.exports = {
-  authenticateUser
+  authenticate
 };
