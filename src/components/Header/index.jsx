@@ -6,27 +6,37 @@ import { useRouter } from "next/navigation";
 import userPlaceholder from "@/assets/user.png";
 import { IoLogOutOutline } from "react-icons/io5";
 import { Button } from "../Button";
+import { useEffect, useState } from "react";
 
 export function Header() {
   const router = useRouter();
   const { user, logout } = useAuth();
-  const avatarUrl = user?.avatarUrl ? user.avatarUrl : userPlaceholder;
+  const [avatarUrl, setAvatarUrl] = useState(userPlaceholder);
 
   function redirectHome() {
     router.push("/");
   }
 
   function redirectClasses() {
-    router.push("/classes");
+    router.push("/class");
   }
 
   function redirectTexts() {
-    router.push("/texts");
+    router.push("/text");
   }
   
   function redirectUser() {
     router.push("/user");
   }
+
+  async function handleLogout() {
+    await logout();
+    router.push("/signin");
+  }
+
+  useEffect(() => {
+    setAvatarUrl(user?.avatarUrl ? `/uploads/${user.avatarUrl}` : userPlaceholder);
+  }, [user]);
   
   return (
     <Container >
@@ -60,7 +70,7 @@ export function Header() {
         <Button
           icon={IoLogOutOutline}
           bgColor={"transparent"}
-          onClick={logout}
+          onClick={handleLogout}
         />
       </OptionsContainer>
     </Container>

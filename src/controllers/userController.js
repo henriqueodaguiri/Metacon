@@ -15,7 +15,20 @@ const update = async (req, userId) => {
   return createResponse({ status: 201 });
 };
 
+const updateAvatar = async (req, userId) => {
+  const formData = await req.formData();
+  const file = formData.get("avatar");
+
+  if(!file) {
+    return createResponse({ body: { message: "Não foi enviado key 'avatar'" }, status: 400 });
+  }
+
+  const uniqueFileName = await userService.updateAvatar({ userId, file });
+  return createResponse({ body: { avatar: uniqueFileName },status: 201 });
+};
+
 module.exports = {
+  updateAvatar,
   create,
   update
 };

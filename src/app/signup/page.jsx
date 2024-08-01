@@ -5,9 +5,8 @@ import { Button } from "@/components/Button";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { FaUser } from "react-icons/fa";
-import { useAuth } from "@/context/auth";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { api } from "@/lib/api";
 import Link from "next/link";
@@ -17,7 +16,6 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { user } = useAuth();
   const router = useRouter();
 
   function validateInput() {
@@ -59,12 +57,6 @@ const SignUp = () => {
     }
   }
 
-  useEffect(() => {
-    if (user) {
-      router.push("/");
-    }
-  }, [user]);
-
   return (
     <Container>
       <SignUpContainer>
@@ -98,7 +90,7 @@ const SignUp = () => {
           onClick={handleSignUp}
           width={"100%"}
         />
-        <Link href="/">
+        <Link href="/signin">
           Já tenho cadastro
         </Link>
       </SignUpContainer>

@@ -1,6 +1,7 @@
 const AppError = require("@/lib/appError");
 const prisma = require("@/lib/prisma");
 const bcrypt = require("bcrypt");
+import DiskStorage from "@/lib/diskStorage";
 
 const getUserById = async (id) => {
   const user = await prisma.user.findFirst({
@@ -74,8 +75,32 @@ const update = async ({ userId, name, email, old_password, new_password }) => {
   });
 };
 
+const updateAvatar = async ({ userId, file }) => {
+  const user = await getUserById(userId);
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const fileName = file.name;
+  const diskStorage = new DiskStorage();
+  const uniqueFileName = await diskStorage.save(fileName, buffer);
+
+  if(user.avatarUrl) {
+    diskStorage.delete(user.avatarUrl);
+  }
+
+  await prisma.user.update({
+    where: {
+      id: userId
+    },
+    data: {
+      avatarUrl: uniqueFileName
+    }
+  });
+
+  return uniqueFileName;
+};
+
 module.exports = {
   create,
   update,
-  getUserById
+  getUserById,
+  updateAvatar
 };

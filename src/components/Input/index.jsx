@@ -1,13 +1,19 @@
 "use client";
 import { Container, InputElement } from "./styles";
 
-export function Input({icon: Icon, ...rest}) {
+export function Input({icon: Icon, margin, bgColor, width, ...rest}) {
   return (
-    <Container>
+    <Container
+      $bgColor={bgColor}
+      $margin={margin}
+    >
       {
         Icon && <Icon size={30}/>
       }
-      <InputElement {...rest}/>
+      <InputElement 
+        $width={width}
+        {...rest}
+      />
     </Container>
   );
 }

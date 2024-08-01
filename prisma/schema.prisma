@@ -57,7 +57,7 @@ model Text {
   id           Int           @id @default(autoincrement())
   name         String
   content      String
-  difficulty   Difficulty    @default(NORMAL)
+  difficulty   Difficulty    @default(REGULAR)
   coverUrl     String?       @map("cover_url")
   createdAt    DateTime      @default(now()) @map("created_at")
   updatedAt    DateTime      @updatedAt @map("updated_at")
@@ -71,7 +71,7 @@ model Text {
 enum Difficulty {
   VERY_EASY
   EASY
-  NORMAL
+  REGULAR
   HARD
   VERY_HARD
 }
@@ -104,7 +104,7 @@ model Question {
   text       Text       @relation(fields: [textId], references: [id])
   textId     Int        @map("text_id")
   statement  String
-  difficulty Difficulty @default(NORMAL)
+  difficulty Difficulty @default(REGULAR)
   createdAt  DateTime   @default(now()) @map("created_at")
   updatedAt  DateTime   @updatedAt @map("updated_at")
   choices    Choice[]

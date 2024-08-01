@@ -41,7 +41,7 @@ export const CameraContainer = styled.label`
   cursor: pointer;
   border-radius: 50%;
   padding: 1.2rem;
-  background-color: ${({ theme }) => theme.COLORS.BLUE };
+  background-color: ${({ theme }) => theme.COLORS.VIOLET };
   position: absolute;
   bottom: 0;
   right: 0;

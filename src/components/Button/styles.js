@@ -8,6 +8,6 @@ export const Container = styled.button`
   text-transform: uppercase;
   padding: ${({ $padding }) => $padding || "2rem" };
   border-radius: 20px;
-  background-color: ${({ theme, $bgColor }) => $bgColor || theme.COLORS.BLUE};
+  background-color: ${({ theme, $bgColor }) => $bgColor || theme.COLORS.VIOLET};
   width: ${({ $width }) => $width || "auto" };
 `;

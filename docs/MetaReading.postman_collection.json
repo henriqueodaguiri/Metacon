@@ -10,11 +10,189 @@
 			"name": "User",
 			"item": [
 				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Student 21\",\n    \"email\": \"student22@example.com\",\n    \"password\": \"123\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{NEXT_URL_API}}/api/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Put",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"teacher 1\",\n    \"email\": \"teacher@example.com\",\n    \"old_password\": \"123\",\n    \"new_password\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{NEXT_URL_API}}/api/users"
+					},
+					"response": []
+				},
+				{
+					"name": "GetAvatar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"teacher 1\",\n    \"email\": \"teacher@example.com\",\n    \"old_password\": \"123\",\n    \"new_password\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{NEXT_URL_API}}/api/users"
+					},
+					"response": []
+				},
+				{
+					"name": "PatchAvatar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": "{{NEXT_URL_API}}/api/users/avatar"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Text",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"O pequeno príncipe\",\n    \"difficulty\": \"HARD\",\n    \"content\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod urna quam, et malesuada felis lobortis vel. Sed tincidunt mi nisl, in gravida est dignissim sed. Mauris ipsum ante, pharetra in commodo vitae, tincidunt in quam. Nullam et placerat ex, sed malesuada velit. Proin semper aliquam elit, id auctor nunc vehicula eget. Pellentesque varius justo augue, eget vehicula arcu dignissim sed. Vestibulum euismod sapien enim, eget vulputate neque sollicitudin vel. Quisque ut venenatis neque. Morbi bibendum massa magna. Vivamus et quam tellus. Donec ac porttitor dui. Suspendisse potenti. Nam faucibus tortor non accumsan efficitur. Ut sed aliquet justo, at porttitor elit. Integer ornare turpis sit amet purus egestas bibendum. Phasellus sagittis, ipsum id ultrices elementum, enim enim laoreet enim, vitae hendrerit mi enim sed risus. Morbi eu felis massa. In ut ultricies augue. Ut ut nulla molestie, gravida libero vel, ornare lectus. Quisque non lectus eget odio sollicitudin iaculis. In iaculis eu urna ut faucibus. Quisque mollis eu leo a rhoncus. Maecenas eget eleifend massa, a euismod dui. Phasellus tempor sed lacus non fringilla. Sed dui ipsum, eleifend sed rutrum vel, imperdiet sit amet lorem. Duis quis erat imperdiet leo ultrices auctor eu viverra massa.Curabitur sodales quam metus, vitae porta risus suscipit ut. Aenean sem eros, imperdiet eu mi non, sodales auctor nisl. Duis posuere vehicula nibh, sed elementum ante viverra eget. Quisque dictum arcu neque, eu imperdiet elit lacinia ac. Donec ex risus, tempus at mi quis, pulvinar blandit ex. Donec porttitor aliquet urna et porta. Etiam sollicitudin eros ante, ut consequat est molestie ut. Phasellus erat arcu, venenatis ac eleifend et, dignissim placerat metus. In commodo sapien sit amet vehicula faucibus. Aenean sagittis elit quis posuere vehicula. Mauris sit amet enim orci. Vivamus metus lectus, vestibulum eu nibh sed, ultrices accumsan mi. Fusce laoreet dignissim lacus, id vestibulum est. Phasellus accumsan varius convallis. Etiam sem erat, vulputate ac luctus quis, pulvinar non augue. Mauris nec efficitur orci, non scelerisque dui. Mauris bibendum feugiat ligula, et fermentum arcu dictum et. Cras vel posuere massa, at aliquam libero. Fusce condimentum tempor ullamcorper. Nulla metus justo, consequat ut dui et, viverra mattis nunc.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{NEXT_URL_API}}/api/texts"
+					},
+					"response": []
+				},
+				{
 					"name": "Index",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/texts?name=pe",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"texts"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "pe"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"name\": \"O pequeno príncipe 6\",\n    \"difficulty\": \"EASY\",\n    \"content\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod urna quam, et malesuada felis lobortis vel. Sed tincidunt mi nisl, in gravida est dignissim sed. Mauris ipsum ante, pharetra in commodo vitae, tincidunt in quam. Nullam et placerat ex, sed malesuada velit. Proin semper aliquam elit, id auctor nunc vehicula eget. Pellentesque varius justo augue, eget vehicula arcu dignissim sed. Vestibulum euismod sapien enim, eget vulputate neque sollicitudin vel. Quisque ut venenatis neque. Morbi bibendum massa magna. Vivamus et quam tellus. Donec ac porttitor dui. Suspendisse potenti. Nam faucibus tortor non accumsan efficitur. Ut sed aliquet justo, at porttitor elit. Integer ornare turpis sit amet purus egestas bibendum. Phasellus sagittis, ipsum id ultrices elementum, enim enim laoreet enim, vitae hendrerit mi enim sed risus. Morbi eu felis massa. In ut ultricies augue. Ut ut nulla molestie, gravida libero vel, ornare lectus. Quisque non lectus eget odio sollicitudin iaculis. In iaculis eu urna ut faucibus. Quisque mollis eu leo a rhoncus. Maecenas eget eleifend massa, a euismod dui. Phasellus tempor sed lacus non fringilla. Sed dui ipsum, eleifend sed rutrum vel, imperdiet sit amet lorem. Duis quis erat imperdiet leo ultrices auctor eu viverra massa.Curabitur sodales quam metus, vitae porta risus suscipit ut. Aenean sem eros, imperdiet eu mi non, sodales auctor nisl. Duis posuere vehicula nibh, sed elementum ante viverra eget. Quisque dictum arcu neque, eu imperdiet elit lacinia ac. Donec ex risus, tempus at mi quis, pulvinar blandit ex. Donec porttitor aliquet urna et porta. Etiam sollicitudin eros ante, ut consequat est molestie ut. Phasellus erat arcu, venenatis ac eleifend et, dignissim placerat metus. In commodo sapien sit amet vehicula faucibus. Aenean sagittis elit quis posuere vehicula. Mauris sit amet enim orci. Vivamus metus lectus, vestibulum eu nibh sed, ultrices accumsan mi. Fusce laoreet dignissim lacus, id vestibulum est. Phasellus accumsan varius convallis. Etiam sem erat, vulputate ac luctus quis, pulvinar non augue. Mauris nec efficitur orci, non scelerisque dui. Mauris bibendum feugiat ligula, et fermentum arcu dictum et. Cras vel posuere massa, at aliquam libero. Fusce condimentum tempor ullamcorper. Nulla metus justo, consequat ut dui et, viverra mattis nunc.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{NEXT_URL_API}}/api/texts"
+					},
+					"response": []
+				},
+				{
+					"name": "GetAvatar",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"teacher 1\",\n    \"email\": \"teacher@example.com\",\n    \"old_password\": \"123\",\n    \"new_password\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": "{{NEXT_URL_API}}/api/users"
+					},
+					"response": []
+				},
+				{
+					"name": "PatchAvatar",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "cover",
+									"type": "file",
+									"src": "/home/vitor/repos/meta-reading/src/assets/o-pequeno-principe.jpg"
+								}
+							]
+						},
+						"url": "{{NEXT_URL_API}}/api/texts/cover/1"
 					},
 					"response": []
 				}
@@ -42,13 +220,34 @@
 					"response": []
 				},
 				{
+					"name": "GetAuthUser",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"teacher@example.com\",\n    \"password\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{NEXT_URL_API}}/api/session"
+					},
+					"response": []
+				},
+				{
 					"name": "Logout",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"teacher@example.com\",\n    \"password\": \"asdasdasd\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {
 									"language": "json"

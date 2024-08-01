@@ -13,10 +13,12 @@ export const Container = styled.header`
 
   button {
     transition: none;
+    color: ${({ theme }) => theme.COLORS.BLACK};
   }
 
   button:hover {
-    background-color: ${({ theme }) => theme.COLORS.BLUE};
+    background-color: ${({ theme }) => theme.COLORS.VIOLET};
+    color: ${({ theme }) => theme.COLORS.WHITE};
     filter: brightness(1);
   }
 `;

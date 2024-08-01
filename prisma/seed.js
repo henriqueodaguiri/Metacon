@@ -66,7 +66,7 @@ async function createText() {
     data: {
       name: "Sample Text",
       content: "This is a sample text content.",
-      difficulty: "NORMAL",
+      difficulty: "REGULAR",
     },
   });
 
@@ -95,7 +95,7 @@ async function createQuestions() {
       data: {
         textId: text.id,
         statement: `Sample question ${i} about the text.`,
-        difficulty: "NORMAL",
+        difficulty: "REGULAR",
       },
     });
 
