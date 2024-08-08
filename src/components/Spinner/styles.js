@@ -23,6 +23,6 @@ export const SpinnerElement = styled.div`
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
-  border-left-color: #09f;
+  border-left-color: ${({ theme }) => theme.COLORS.PURPLE };
   animation: ${spin} 1s linear infinite;
 `;

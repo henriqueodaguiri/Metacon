@@ -1,7 +1,8 @@
+import FireBaseStorage from "@/lib/fireBaseStorage";
 const AppError = require("@/lib/appError");
 const prisma = require("@/lib/prisma");
-import DiskStorage from "@/lib/diskStorage";
 const difficulties = require("@/lib/difficulties");
+const { getImageNameFromFireBaseUrl } = require("@/lib/urlHelper");
 
 const getByName = async (name) => {
   if(!name) {
@@ -90,11 +91,12 @@ const updateCover = async ({ textId, file }) => {
 
   const buffer = Buffer.from(await file.arrayBuffer());
   const fileName = file.name;
-  const diskStorage = new DiskStorage();
-  const uniqueFileName = await diskStorage.save(fileName, buffer);
+  const fireBaseStorage = new FireBaseStorage();
+  const uniqueFileName = await fireBaseStorage.save(fileName, buffer);
 
   if(text.coverUrl) {
-    diskStorage.delete(text.coverUrl);
+    const fileDeleteName = getImageNameFromFireBaseUrl(text.coverUrl);
+    fireBaseStorage.delete(fileDeleteName);
   }
 
   await prisma.text.update({

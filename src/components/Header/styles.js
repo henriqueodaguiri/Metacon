@@ -17,9 +17,13 @@ export const Container = styled.header`
   }
 
   button:hover {
-    background-color: ${({ theme }) => theme.COLORS.VIOLET};
+    background-color: ${({ theme }) => theme.COLORS.PURPLE};
     color: ${({ theme }) => theme.COLORS.WHITE};
     filter: brightness(1);
+
+    > svg {
+      color: ${({ theme }) => theme.COLORS.WHITE};
+    }
   }
 `;
 

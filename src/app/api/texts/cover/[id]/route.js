@@ -1,5 +1,5 @@
 import handleError from "@/lib/errorHandler";
-import getIdFromUrl from "@/lib/urlHelper";
+import { getIdFromUrl } from "@/lib/urlHelper";
 import { verifyToken } from "@/middleware/authMiddleware";
 import { verifyTeacherRole } from "@/middleware/teacherMiddleware";
 const textController = require("@/controllers/textController");

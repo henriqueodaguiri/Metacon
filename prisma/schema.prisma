@@ -100,15 +100,14 @@ model Performance {
 }
 
 model Question {
-  id         Int        @id @default(autoincrement())
-  text       Text       @relation(fields: [textId], references: [id])
-  textId     Int        @map("text_id")
-  statement  String
-  difficulty Difficulty @default(REGULAR)
-  createdAt  DateTime   @default(now()) @map("created_at")
-  updatedAt  DateTime   @updatedAt @map("updated_at")
-  choices    Choice[]
-  answers    Answer[]
+  id        Int      @id @default(autoincrement())
+  text      Text     @relation(fields: [textId], references: [id])
+  textId    Int      @map("text_id")
+  statement String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  choices   Choice[]
+  answers   Answer[]
 
   @@map("questions")
 }
@@ -118,7 +117,6 @@ model Choice {
   question   Question @relation(fields: [questionId], references: [id])
   questionId Int      @map("question_id")
   isCorrect  Boolean  @default(false) @map("is_correct")
-  weight     Float
   content    String
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")

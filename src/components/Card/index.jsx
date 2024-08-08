@@ -15,7 +15,7 @@ export function Card({ data, onClick }){
     }
 
     if(data?.coverUrl) {
-      setCover(`/uploads/${data.coverUrl}`);
+      setCover(`${data.coverUrl}`);
       return;
     }
 

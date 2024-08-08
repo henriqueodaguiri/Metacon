@@ -5,7 +5,9 @@ import bookPlaceholder from "@/assets/book-placeholder.png";
 import Image from "next/image";
 import { Header } from "@/components/Header";
 import { Input } from "@/components/Input";
+import { Questions } from "@/components/Questions";
 import { TextArea } from "@/components/TextArea";
+import { LoadingPage } from "@/components/LoadingPage";
 import { Button } from "@/components/Button";
 import { SelectInput } from "@/components/SelectInput";
 import { FaCamera } from "react-icons/fa";
@@ -15,10 +17,12 @@ import { api } from "@/lib/api";
 
 const TextDashboard = () => {
   const router = useRouter();
-  const [difficulty, setDifficulty] = useState("REGULAR");
+  const [loading, setLoading] = useState(false);
+  const [difficulty, setDifficulty] = useState(0);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [difficulties, setDifficulties] = useState([
+    { id: 0, name: "SELECIONE A DIFICULDADE" },
     { id: "VERY_EASY", name: "MUITO FÁCIL" },
     { id: "EASY", name: "FÁCIL" },
     { id: "REGULAR", name: "MÉDIO" },
@@ -27,6 +31,7 @@ const TextDashboard = () => {
   ]);
   const [newCover, setNewCover] = useState("");
   const [coverUrl, setCoverUrl] = useState(bookPlaceholder);
+  const [questions, setQuestions] = useState([]);
 
   function handleAvatarChange(event) {
     const file = event.target.files[0];
@@ -44,11 +49,12 @@ const TextDashboard = () => {
   }
 
   async function handleSave() {
-    if (!title || !content) {
-      toast.error("Título e conteúdo são obrigatórios!");
-      return false;
+    if (!title || !difficulty|| !content) {
+      toast.error("Preencha todos os campos!");
+      return;
     }
 
+    setLoading(true);
     try {
       const response = await api.post("/texts", {
         name: title,
@@ -71,14 +77,21 @@ const TextDashboard = () => {
       } else {
         toast.error("Não foi possível atualizar");
       }
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
     <Container>
-      <Header/>
-      <ContentContainer>
-        <TextContainer>
+      {
+        loading && (
+          <LoadingPage/>
+        )
+      }
+      <>
+        <Header/>
+        <ContentContainer>
           <CoverContainer>
             <Image
               src={coverUrl} 
@@ -89,7 +102,7 @@ const TextDashboard = () => {
             />
             <CameraContainer htmlFor="avatar">
               <input type="file" id="avatar" onChange={handleAvatarChange}/>
-              <FaCamera size={60}/>
+              <FaCamera size={30}/>
             </CameraContainer>
           </CoverContainer>
           <FieldsContainer>
@@ -108,17 +121,24 @@ const TextDashboard = () => {
               value={content}
               onChange={(e) => setContent(e.target.value)}
             />
-            <Button
-              title={"Salvar"}
-              onClick={handleSave}
+          </FieldsContainer>
+        </ContentContainer>
+
+        <ContentContainer>
+          <FieldsContainer>
+            <Questions
+              questions={questions}
+              setQuestions={setQuestions}
             />
           </FieldsContainer>
-          {/* <QuestionsContainer>
-            <input type="text" placeholder="Pergunta" />
-            <button>SALVAR</button>
-          </QuestionsContainer> */}
-        </TextContainer>
-      </ContentContainer>
+        </ContentContainer>
+        <Button
+          title={"Salvar"}
+          width={"100%"}
+          maxWidth={"800px"}
+          onClick={handleSave}
+        />
+      </>
     </Container>
   );
 };

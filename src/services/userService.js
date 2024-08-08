@@ -1,7 +1,8 @@
+import FireBaseStorage from "@/lib/fireBaseStorage";
 const AppError = require("@/lib/appError");
 const prisma = require("@/lib/prisma");
 const bcrypt = require("bcrypt");
-import DiskStorage from "@/lib/diskStorage";
+const { getImageNameFromFireBaseUrl } = require("@/lib/urlHelper");
 
 const getUserById = async (id) => {
   const user = await prisma.user.findFirst({
@@ -79,11 +80,12 @@ const updateAvatar = async ({ userId, file }) => {
   const user = await getUserById(userId);
   const buffer = Buffer.from(await file.arrayBuffer());
   const fileName = file.name;
-  const diskStorage = new DiskStorage();
-  const uniqueFileName = await diskStorage.save(fileName, buffer);
+  const fireBaseStorage = new FireBaseStorage();
+  const uniqueFileName = await fireBaseStorage.save(fileName, buffer);
 
   if(user.avatarUrl) {
-    diskStorage.delete(user.avatarUrl);
+    const fileDeleteName = getImageNameFromFireBaseUrl(user.avatarUrl);
+    fireBaseStorage.delete(fileDeleteName);
   }
 
   await prisma.user.update({

@@ -95,7 +95,6 @@ async function createQuestions() {
       data: {
         textId: text.id,
         statement: `Sample question ${i} about the text.`,
-        difficulty: "REGULAR",
       },
     });
 
@@ -107,7 +106,6 @@ async function createQuestions() {
           questionId: question.id,
           isCorrect,
           content: `Choice ${choiceId} content.`,
-          weight: isCorrect ? 2.0 : 0.0,
         },
       });
     }
@@ -183,7 +181,7 @@ async function createPerformance() {
           });
 
           if (choice) {
-            totalValue += choice.weight;
+            totalValue += 2;
           }
         }
       }

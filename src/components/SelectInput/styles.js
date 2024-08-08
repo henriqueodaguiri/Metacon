@@ -9,7 +9,7 @@ export const Container = styled.div`
   align-items: center;
   gap: 0.8rem;
   width: ${({ $width }) => $width || "100%" };
-  border: 2px solid ${({ theme }) => theme.COLORS.VIOLET};
+  border: 2px solid ${({ theme }) => theme.COLORS.PURPLE};
 
   > select {
     background-color: transparent;

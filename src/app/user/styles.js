@@ -41,7 +41,7 @@ export const CameraContainer = styled.label`
   cursor: pointer;
   border-radius: 50%;
   padding: 1.2rem;
-  background-color: ${({ theme }) => theme.COLORS.VIOLET };
+  background-color: ${({ theme }) => theme.COLORS.PURPLE };
   position: absolute;
   bottom: 0;
   right: 0;
@@ -52,5 +52,6 @@ export const CameraContainer = styled.label`
 
   svg {
     cursor: pointer;
+    color: ${({ theme }) => theme.COLORS.WHITE };
   }
 `;

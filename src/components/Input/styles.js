@@ -6,7 +6,7 @@ export const Container = styled.div`
   align-items: center;
   background-color: ${({ $bgColor, theme }) => $bgColor || theme.COLORS.LIGHT };
   margin: ${({ $margin }) => $margin || 0 };
-  border: 2px solid ${({ theme }) => theme.COLORS.VIOLET};
+  border: 2px solid ${({ $borderColor, theme }) => $borderColor || theme.COLORS.PURPLE};
   border-radius: 20px;
   padding: 1.6rem;
 `;
@@ -16,4 +16,5 @@ export const InputElement = styled.input`
   border: none;
   padding-left: 0.8rem;
   width: ${({ $width }) => $width || "auto" };
+  width: 100%;
 `;

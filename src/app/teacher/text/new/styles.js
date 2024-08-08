@@ -2,30 +2,34 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  align-items: center;
-  height: 100vh;
+  > div {
+    margin-top: 2rem;
+  }
+
+  > button {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+    margin: 2rem auto;
+    background-color: ${({ theme }) => theme.COLORS.PURPLE };
+    color: ${({ theme }) => theme.COLORS.WHITE };
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+  }
 `;
 
 export const ContentContainer = styled.div`
   display: flex;
-  width: 100%;
   flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-`;
-
-export const TextContainer = styled.div`
-  display: flex;
-  width: 100%;
   align-items: center; 
-  gap: 2rem;
-  padding: 2rem;
+  justify-content: center;
+  max-width: 800px;
+  margin: 0 auto;
   background-color: ${({ theme }) => theme.COLORS.WHITE };
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+  padding: 2rem;
+  gap: 1.6rem;
 `;
 
 export const CoverContainer = styled.div`
@@ -33,23 +37,22 @@ export const CoverContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 400px;
-  height: 400px;
+  width: 250px;
+  height: 250px;
   position: relative;
   border-radius: 20px;
-  border: 4px solid ${({ theme }) => theme.COLORS.VIOLET};
+  border: 4px solid ${({ theme }) => theme.COLORS.PURPLE};
 
   > img {
-    width: 100%;
-    border-radius: 20px;
+    border-radius: 16px;
   }
 `;
 
 export const CameraContainer = styled.label`
   cursor: pointer;
   border-radius: 50%;
-  padding: 2rem;
-  background-color: ${({ theme }) => theme.COLORS.VIOLET };
+  padding: 1.2rem;
+  background-color: ${({ theme }) => theme.COLORS.PURPLE };
   position: absolute;
   bottom: -16px;
   right: -16px;
@@ -60,6 +63,7 @@ export const CameraContainer = styled.label`
 
   svg {
     cursor: pointer;
+    color: ${({ theme }) => theme.COLORS.WHITE };
   }
 `;
 
@@ -67,19 +71,14 @@ export const FieldsContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.8rem;
+  width: 100%;
 
   > button {
     align-self: flex-end;
   }
 
   > textarea {
-    height: 50vh;
+    height: 30vh;
   }
-`;
-
-export const QuestionsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
 `;

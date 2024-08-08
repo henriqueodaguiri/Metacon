@@ -35,7 +35,7 @@ export function Header() {
   }
 
   useEffect(() => {
-    setAvatarUrl(user?.avatarUrl ? `/uploads/${user.avatarUrl}` : userPlaceholder);
+    setAvatarUrl(user?.avatarUrl ? `${user.avatarUrl}` : userPlaceholder);
   }, [user]);
   
   return (

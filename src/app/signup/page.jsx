@@ -44,8 +44,12 @@ const SignUp = () => {
 
     try {
       await api.post("/users", {name, email, password});
-      toast.success("Cadastro com sucesso!");
-      router.push("/");
+      toast.success("Cadastrado com sucesso!", {
+        onClose: () => {
+          router.push("/signin");
+        },
+        autoClose: 1500, 
+      });
     } catch (error) {
       const errorMessage = error.response?.data?.message;
       if(errorMessage) {
