@@ -16,6 +16,7 @@ export const WallpaperContainer = styled.div`
 `;
 
 export const LoginContainer = styled.div`
+  min-width: 400px;
   margin: 0 16rem;
   display: flex;
   flex-direction: column;

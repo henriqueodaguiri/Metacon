@@ -14,7 +14,8 @@ const getByName = async (name) => {
       name: {
         contains: name,
         mode: "insensitive"
-      }
+      }, 
+      active: true
     },
     orderBy: {
         name: "asc"
@@ -32,29 +33,77 @@ const getTextById = async (id) => {
     }
   });
 
-  return text;
-};
-
-const create = async ({ name, difficulty, content }) => {
-  const textAlreadyRegister = await prisma.text.findFirst({
-    where: {
-      name
-    }
-  });
-
-  if (textAlreadyRegister) {
-    throw new AppError("Já existe um texto com esse nome!", 400);
+  if(!text) {
+    throw new AppError("Texto não encontrado!", 404);
   }
 
-  const newText = await prisma.text.create({
-    data: {
-      name,
-      difficulty,
-      content
+  const questions = await prisma.question.findMany({
+    where: {
+      textId: text.id
     }
   });
 
-  return newText.id;
+  for(const question of questions) {
+    const choices = await prisma.choice.findMany({
+      where: {
+        questionId: question.id
+      }
+    });
+
+    question.choices = choices;
+  }
+
+  const textObj = {
+    text,
+    questions
+  };
+
+  return textObj;
+};
+
+const create = async ({ name, difficulty, content, questions }) => {
+  const result = await prisma.$transaction(async (prisma) => {
+    const textAlreadyRegister = await prisma.text.findFirst({
+      where: {
+        name
+      }
+    });
+
+    if (textAlreadyRegister) {
+      throw new AppError("Já existe um texto com esse nome!", 400);
+    }
+
+    const newText = await prisma.text.create({
+      data: {
+        name,
+        difficulty,
+        content
+      }
+    });
+
+    for (const question of questions) {
+      const newQuestion = await prisma.question.create({
+        data: {
+          statement: question.statement,
+          textId: newText.id, 
+        }
+      });
+
+      for(const choice of question.choices) {
+        await prisma.choice.create({
+          data: {
+            questionId: newQuestion.id,
+            isCorrect: choice.isCorrect,
+            content: choice.content
+          }
+        });
+      }
+    }
+
+    return newText.id;
+  });
+
+  return result;
 };
 
 const update = async ({ id, name, difficulty, content }) => {

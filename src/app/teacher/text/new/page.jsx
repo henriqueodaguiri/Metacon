@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { api } from "@/lib/api";
 
-const TextDashboard = () => {
+const NewText = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [difficulty, setDifficulty] = useState(0);
@@ -54,12 +54,18 @@ const TextDashboard = () => {
       return;
     }
 
+    if (!questions || questions.length === 0) {
+      toast.error("Insira perguntas!");
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await api.post("/texts", {
         name: title,
         difficulty,
-        content
+        content,
+        questions
       });
 
       const id = response.data.id;
@@ -143,4 +149,4 @@ const TextDashboard = () => {
   );
 };
 
-export default TextDashboard;
+export default NewText;
