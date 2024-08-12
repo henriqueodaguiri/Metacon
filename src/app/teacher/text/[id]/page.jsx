@@ -5,10 +5,12 @@ import {
   Container, 
   CameraContainer, 
   ContentContainer, 
+  BackButtonContainer,
   CoverContainer, 
   FieldsContainer, 
+  ButtonsContainer,
   ModalContent, 
-  ButtonsContent 
+  ModalButtonsContent
 } from "./styles";
 import bookPlaceholder from "@/assets/book-placeholder.png"; 
 import Image from "next/image";
@@ -20,13 +22,17 @@ import { LoadingPage } from "@/components/LoadingPage";
 import { Button } from "@/components/Button";
 import { SelectInput } from "@/components/SelectInput";
 import { FaCamera } from "react-icons/fa";
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { toast } from "react-toastify";
 import { api } from "@/lib/api";
 import Modal from "react-modal";
+import { useTheme } from "styled-components";
 
 const EditText = () => {
+  const theme = useTheme();
   const { id } = useParams(); 
   const router = useRouter();
+  const [isNew, setIsNew] = useState(false);
   const [loading, setLoading] = useState(false);
   const [difficulty, setDifficulty] = useState(0);
   const [title, setTitle] = useState(""); 
@@ -48,6 +54,11 @@ const EditText = () => {
     Modal.setAppElement("#__next");
     
     async function fetchText() {
+      if(id === "new") {
+        setIsNew(true);
+        return;
+      }
+
       try {
         const result = await api.get(`/texts/${id}`);
         const text = result?.data?.text.text;
@@ -59,8 +70,9 @@ const EditText = () => {
         setQuestions(text.questions); 
         setCoverUrl(text.coverUrl || bookPlaceholder); 
         setQuestions(questions);
+        setIsNew(false);
       } catch {
-        router.push("/");
+        router.push("/teacher/text");
       }
     }
 
@@ -75,8 +87,20 @@ const EditText = () => {
     setCoverUrl(newCover);
   }
 
-  function confirmDelete() {
-    console.log(`Deleting item with id ${id}`);
+  async function confirmDelete() {
+    try {
+      await api.delete(`/texts/${id}`);
+      sessionStorage.setItem("messageStorage", "Excluído com sucesso!");
+      router.push("/teacher/text");
+    } catch (error) {
+      console.log(error);
+      const errorMessage = error.response?.data?.message;
+      if (errorMessage) {
+        toast.error(errorMessage);
+      } else {
+        toast.error("Não foi possível excluir");
+      }
+    }
     setIsModalOpen(false);
   }
 
@@ -104,20 +128,31 @@ const EditText = () => {
 
     setLoading(true);
     try {
-      const response = await api.post("/texts", {
-        name: title,
-        difficulty,
-        content,
-        questions
-      });
-
-      const id = response.data.id;
-      if (newCover) {
-        await uploadCover(id);
+      let textId = id;
+      if(isNew) {
+        const response = await api.post("/texts", {
+          name: title,
+          difficulty,
+          content,
+          questions
+        });
+  
+        textId = response.data.id;
+      } else {
+        await api.put(`/texts/${textId}`, {
+          name: title,
+          difficulty,
+          content,
+          questions
+        });
       }
 
-      toast.success("Texto criado com sucesso!");
-      router.back();
+      if (newCover) {
+        await uploadCover(textId);
+      }
+
+      sessionStorage.setItem("messageStorage", `${isNew ? "Cadastrado" : "Atualizado"} com sucesso!`);
+      router.push("/teacher/text");
     } catch (error) {
       console.log(error);
       const errorMessage = error.response?.data?.message;
@@ -136,6 +171,9 @@ const EditText = () => {
       {loading && <LoadingPage />}
       <Header />
       <ContentContainer>
+        <BackButtonContainer onClick={() => router.back()}>
+          <IoMdArrowRoundBack size={60}/>
+        </BackButtonContainer>
         <CoverContainer>
           {coverUrl && ( 
             <Image
@@ -178,19 +216,25 @@ const EditText = () => {
           />
         </FieldsContainer>
       </ContentContainer>
-      <Button
-        title={"Salvar"}
-        width={"100%"}
-        maxWidth={"800px"}
-        onClick={handleSave}
-      />
-      <Button
-        title={"Excluir"}
-        width={"100%"}
-        maxWidth={"800px"}
-        onClick={handleDelete}
-      />
-
+      <ButtonsContainer>
+        <Button
+          title={"Salvar"}
+          width={"100%"}
+          maxWidth={"800px"}
+          onClick={handleSave}
+        />
+        {
+          !isNew && (
+            <Button
+              title={"Excluir"}
+              width={"100%"}
+              maxWidth={"800px"}
+              onClick={handleDelete}
+              bgColor={theme.COLORS.DARK_RED}
+            />
+          )
+        }
+      </ButtonsContainer>
       {isModalOpen && (
         <Modal
           isOpen={isModalOpen}
@@ -211,10 +255,10 @@ const EditText = () => {
         >
           <ModalContent>
             <h2>Deseja mesmo excluir?</h2>
-            <ButtonsContent>
+            <ModalButtonsContent>
               <Button title={"Sim"} width={"100%"} onClick={confirmDelete} />
               <Button title={"Não"} width={"100%"} onClick={() => setIsModalOpen(false)} />
-            </ButtonsContent>
+            </ModalButtonsContent>
           </ModalContent>
         </Modal>
       )}

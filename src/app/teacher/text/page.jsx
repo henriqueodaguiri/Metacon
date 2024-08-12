@@ -8,6 +8,7 @@ import { api } from "@/lib/api";
 import { useTheme } from "styled-components";
 import { CiSearch } from "react-icons/ci";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const TextDashboard = () => {
   const router = useRouter();
@@ -32,6 +33,14 @@ const TextDashboard = () => {
 
     fetchTexts();
   }, [search]);
+
+  useEffect(() => {
+    const message = sessionStorage.getItem("messageStorage");
+    if (message) {
+      toast.success(message);
+      sessionStorage.removeItem("messageStorage"); 
+    }
+  }, []);
 
   return (
     <Container>

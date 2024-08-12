@@ -47,8 +47,11 @@
 				},
 				{
 					"name": "GetAvatar",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "PUT",
+						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -59,7 +62,7 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/users"
+						"url": "{{NEXT_URL_API}}/uploads/5e5424ac98718b9183bd-foto 4.jpg"
 					},
 					"response": []
 				},
@@ -142,6 +145,45 @@
 					"response": []
 				},
 				{
+					"name": "Destroy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{NEXT_URL_API}}/api/texts/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Show",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{NEXT_URL_API}}/api/texts/1"
+					},
+					"response": []
+				},
+				{
 					"name": "Put",
 					"request": {
 						"method": "PUT",
@@ -160,9 +202,12 @@
 					"response": []
 				},
 				{
-					"name": "GetAvatar",
+					"name": "GetCover",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
-						"method": "PUT",
+						"method": "GET",
 						"header": [],
 						"body": {
 							"mode": "raw",
@@ -173,12 +218,12 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/users"
+						"url": "{{NEXT_URL_API}}/uploads/f25d80fccb1032efa6fe-o pequeno principe.jpg"
 					},
 					"response": []
 				},
 				{
-					"name": "PatchAvatar",
+					"name": "PatchCover",
 					"request": {
 						"method": "PATCH",
 						"header": [],

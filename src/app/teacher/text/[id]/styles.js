@@ -4,18 +4,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   > div {
     margin-top: 2rem;
-  }
-
-  > button {
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    justify-content: center;
-    margin: 2rem auto;
-    background-color: ${({ theme }) => theme.COLORS.PURPLE };
-    color: ${({ theme }) => theme.COLORS.WHITE };
-    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-  }
+  } 
 `;
 
 export const ContentContainer = styled.div`
@@ -30,6 +19,25 @@ export const ContentContainer = styled.div`
   box-shadow: 0 4px 8px rgba(0,0,0,0.5);
   padding: 2rem;
   gap: 1.6rem;
+  position: relative;
+`;
+
+
+export const BackButtonContainer = styled.div`
+  position: absolute;
+  cursor: pointer;
+  padding: 0.4rem;
+  top: 16px;
+  left: 16px;
+  background-color: ${({ theme }) => theme.COLORS.PURPLE };
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > svg {
+    color: ${({ theme }) => theme.COLORS.WHITE};
+  }
 `;
 
 export const CoverContainer = styled.div`
@@ -83,6 +91,25 @@ export const FieldsContainer = styled.div`
   }
 `;
 
+
+export const ButtonsContainer = styled.div`
+  margin: 2rem auto;
+  display: flex;
+  align-items: center; 
+  justify-content: center;
+  gap: 2rem;
+  max-width: 800px;
+
+  > button {
+    margin: 2rem auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+
+    &:last-child {
+      flex: 1;
+    }
+  }
+`;
+
 export const ModalContent = styled.div`
   display: flex;
   justify-content: center;
@@ -91,10 +118,18 @@ export const ModalContent = styled.div`
   gap: 2rem;
 `;
 
-export const ButtonsContent = styled.div`
+export const ModalButtonsContent = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 2rem;
   width: 100%;
+
+  > button {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+
+    &:first-child {
+      background-color: ${({ theme }) => theme.COLORS.DARK_RED}
+    }
+  }
 `;

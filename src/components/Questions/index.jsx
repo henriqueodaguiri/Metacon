@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 
 export function Questions({ questions, setQuestions }) {
   const [questionIndex, setQuestionIndex] = useState(undefined);
+  const [questionId, setQuestionId] = useState(undefined);
   const [statement, setStatement] = useState("");
   const [choiceA, setChoiceA] = useState("");
   const [choiceB, setChoiceB] = useState("");
@@ -22,6 +23,10 @@ export function Questions({ questions, setQuestions }) {
 
   function handleEdit(index) {
     const question = questions[index];
+
+    if(question?.id) {
+      setQuestionId(question.id);
+    }
     setStatement(question.statement);
     setChoiceA(question.choices[0].content);
     setChoiceB(question.choices[1].content);
@@ -33,7 +38,6 @@ export function Questions({ questions, setQuestions }) {
   
     setSelectedChoice(selectedChoice);
     setQuestionIndex(index);
-    console.log(index);
   }
 
   function clearFields() {
@@ -44,6 +48,7 @@ export function Questions({ questions, setQuestions }) {
     setChoiceD("");
     setSelectedChoice("");
     setQuestionIndex(undefined);
+    setQuestionId(undefined);
   }
 
   function handleInsertQuestion() {
@@ -66,8 +71,15 @@ export function Questions({ questions, setQuestions }) {
   
     const questionObj = {
       statement,
-      choices
+      choices: choices
     };
+
+    if(questionId) {
+      questionObj.id = questionId;
+      choices.map((c, i) => {
+        c.id = questions[questionIndex].choices[i].id;
+      });
+    }
     
     if(Number(questionIndex) >= 0) {
       setQuestions(questions.map((q, index) => index === questionIndex ? questionObj : q));
@@ -77,7 +89,6 @@ export function Questions({ questions, setQuestions }) {
 
     clearFields();
   }
-  
 
   return (
     <Container>

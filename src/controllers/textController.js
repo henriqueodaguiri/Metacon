@@ -8,8 +8,13 @@ const index = async (req, name) => {
 };
 
 const show = async (textId) => {
-  const text = await textService.getTextById(textId);
+  const text = await textService.getById(textId);
   return createResponse({ body: { text }, status: 200 });
+};
+
+const destroy = async (textId) => {
+  await textService.deleteById(textId);
+  return createResponse({ body: { message: "Inativado com sucesso!"}, status: 200 });
 };
 
 const create = async (req) => {
@@ -22,14 +27,13 @@ const create = async (req) => {
   return createResponse({ body: { id }, status: 201 });
 };
 
-const update = async (req) => {
-  const { id, name, difficulty, content } = await req.json();
-  if(!id || !name|| !difficulty|| !content) {
+const update = async (req, textId) => {
+  const { name, difficulty, content, questions } = await req.json();
+  if(!textId || !name || !difficulty || !content || !questions || questions.length === 0) {
     throw new AppError("Dados obrigatórios não informados!", 400);
   }
 
-  await textService.update({ id, name, difficulty, content });
-
+  await textService.update({ id: textId, name, difficulty, content, questions });
   return createResponse({ status: 201 });
 };
 
@@ -50,5 +54,6 @@ module.exports = {
   create,
   update,
   index,
-  show
+  show,
+  destroy
 };
