@@ -14,22 +14,29 @@ import Modal from "react-modal";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { toast } from "react-toastify";
+import { useAuth } from "@/context/auth";
+import roles from "@/lib/roles";
+import { useRouter } from "next/navigation";
 
-export function Text({ index, text, setClassroom, classroom }) {
+export function Text({ index, text, updateClassroom, classroom }) {
+  const router = useRouter();
   const textCover = text?.coverUrl ? `${text.coverUrl}` : textPlaceholder;
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { getAuthUser } = useAuth();
+  const [user, setUser] = useState(null);
+
+  function handleTextClick() {
+    if(user?.role === roles.STUDENT) {
+      router.push(`/student/text/${text.id}`);
+    }
+  }
 
   async function confirmDelete() {
     const textIdToRemove = text.id; 
 
-    const updatedClassroom = {
-      ...classroom,
-      texts: classroom.texts.filter(text => text.id !== textIdToRemove)
-    };
-
     try {
       await api.delete(`/classes/${classroom.id}/text/${textIdToRemove}`);
-      setClassroom(updatedClassroom); 
+      updateClassroom();
       toast.success("Excluído com sucesso!");
     } catch (error) {
       console.log(error);
@@ -49,11 +56,29 @@ export function Text({ index, text, setClassroom, classroom }) {
 
   useEffect(() => {
     Modal.setAppElement("#__next");
+
+    async function fetchUser() {
+      const user = await getAuthUser();
+      setUser(user);
+    }
+
+    fetchUser();
   }, []);
 
   return (
-    <Container $index={index}>
-      <TextContainer>
+    <Container 
+      $index={index}
+      className={user?.role === roles.STUDENT ? "student" : ""}
+      onClick={handleTextClick}
+    >
+      <TextContainer
+        $grade={text.grade}
+      >
+        {
+          text.grade && (
+            <h1>{text.grade}</h1>
+          )
+        }
         <CoverContainer>
           <Image
             src={textCover} 
@@ -64,7 +89,11 @@ export function Text({ index, text, setClassroom, classroom }) {
           />
         </CoverContainer>
         <p>{text.name}</p>
-        <FaTrashAlt onClick={handleDelete}/> 
+        {
+          user?.role === roles.TEACHER && (
+            <FaTrashAlt onClick={handleDelete}/> 
+          )
+        }
       </TextContainer>
       {
       isModalOpen && (

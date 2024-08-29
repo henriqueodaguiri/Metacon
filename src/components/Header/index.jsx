@@ -7,11 +7,13 @@ import userPlaceholder from "@/assets/user.png";
 import { IoLogOutOutline } from "react-icons/io5";
 import { Button } from "../Button";
 import { useEffect, useState } from "react";
+import roles from "@/lib/roles";
 
 export function Header() {
   const router = useRouter();
-  const { user, logout } = useAuth();
+  const { user, logout, getAuthUser } = useAuth();
   const [avatarUrl, setAvatarUrl] = useState(userPlaceholder);
+  const [role, setRole] = useState(roles.STUDENT);
 
   function redirectHome() {
     router.push("/");
@@ -36,6 +38,12 @@ export function Header() {
 
   useEffect(() => {
     setAvatarUrl(user?.avatarUrl ? `${user.avatarUrl}` : userPlaceholder);
+    async function fetchUser() {
+      const authenticatedUser = await getAuthUser();
+      setRole(authenticatedUser.role);
+    }
+    
+    fetchUser();
   }, [user]);
   
   return (
@@ -50,11 +58,15 @@ export function Header() {
           onClick={redirectClasses}
           title={"Turmas"}
         />
-        <Button
-          bgColor={"transparent"}
-          onClick={redirectTexts}
-          title={"Leituras"}
-        />
+        {
+          role === roles.TEACHER && (
+            <Button
+              bgColor={"transparent"}
+              onClick={redirectTexts}
+              title={"Leituras"}
+            />
+          )
+        }
       </MainContainer>
       <OptionsContainer>
         <AvatarContainer>

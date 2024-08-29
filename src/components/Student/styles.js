@@ -70,8 +70,9 @@ export const Performance = styled.div`
     border-top: 2px solid ${({ theme, $index }) => $index % 2 === 0 ? theme.COLORS.WHITE : theme.COLORS.LIGHT_GREY };
   }  
   
-  &:last-child {
-    font-weight: 600;
+  p > span {
+    color: ${({ theme, $grade }) => Number($grade) >= 6 ? theme.COLORS.GREEN : theme.COLORS.DARK_RED };
+    font-weight: 500;
   }
 `;
 

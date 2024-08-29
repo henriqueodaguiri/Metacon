@@ -1,4 +1,3 @@
-const generateRandomCode = require("../src/lib/generateRandomCode");
 const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcrypt");
 const prisma = new PrismaClient();
@@ -36,7 +35,7 @@ async function createClasses() {
   });
 
   for (let i = 1; i <= 2; i++) {
-    const accessKey = generateRandomCode(8);
+    const accessKey = (i === 1 ? "juQA6st0" : "1RctlB69");
     const newClass = await prisma.class.create({
       data: {
         name: `Class ${i}`,

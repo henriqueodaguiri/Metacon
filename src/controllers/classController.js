@@ -2,13 +2,13 @@ const classService = require("@/services/classService");
 const createResponse = require("@/lib/responseHelper");
 const AppError = require("@/lib/appError");
 
-const index = async (req, name, userId) => {
-  const classroom = await classService.getByName(name, userId);
+const index = async (req, name, userId, userRole) => {
+  const classroom = await classService.getByName(name, userId, userRole);
   return createResponse({ body: { classroom: classroom }, status: 200 });
 };
 
-const show = async (classId, userId) => {
-  const classroom = await classService.getById(classId, userId);
+const show = async (classId, userId, userRole) => {
+  const classroom = await classService.getById(classId, userId, userRole);
   return createResponse({ body: { classroom }, status: 200 });
 };
 
@@ -42,6 +42,11 @@ const addText = async (classId, textId, teacherId) => {
   return createResponse({ body: { message: "Adicionado com sucesso!"}, status: 201 });
 };
 
+const updateGrades = async (classId, teacherId) => {
+  await classService.updateGrades(classId, teacherId);
+  return createResponse({ body: { message: "Notas atualizadas com sucesso!"}, status: 201 });
+};
+
 const create = async (req, userId) => {
   const { name } = await req.json();
   if(!name) {
@@ -50,6 +55,16 @@ const create = async (req, userId) => {
 
   const classroom = await classService.create({ name, userId });
   return createResponse({ body: { classroom }, status: 201 });
+};
+
+const join = async (req, userId) => {
+  const { accessKey } = await req.json();
+  if(!accessKey) {
+    throw new AppError("Dados obrigatórios não informados!", 400);
+  }
+
+  await classService.join({ accessKey, userId });
+  return createResponse({ body: { message: "Ingressado com sucesso!"}, status: 200 });
 };
 
 const update = async (req, classId, userId) => {
@@ -71,5 +86,7 @@ module.exports = {
   removeStudent,
   removeText,
   addText,
-  exportExcel
+  exportExcel,
+  join,
+  updateGrades
 };

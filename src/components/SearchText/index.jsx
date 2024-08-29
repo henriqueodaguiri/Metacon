@@ -14,25 +14,19 @@ import { toast } from "react-toastify";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { useTheme } from "styled-components";
 
-export function SearchText({ setClassroom, classroom }) {
+export function SearchText({ updateClassroom, classroom }) {
   const theme = useTheme();
   const [texts, setTexts] = useState([]);
   const [search, setSearch] = useState("");
+  const hasText = !(!texts  || texts.length === 0);
 
   async function handleAddText(text) {
-    const texts = [...classroom.texts, text];
-    texts.sort((a, b) => a.name.localeCompare(b.name));
-
-    const updatedClassroom = {
-      ...classroom,
-      texts: texts
-    };
-
     try {
       await api.post(`/classes/${classroom.id}/text/${text.id}`);
-      setClassroom(updatedClassroom); 
-      toast.success("Incluído com sucesso!");
+      await api.put(`/classes/${classroom.id}/text`);
+      await updateClassroom();
       setSearch("");
+      toast.success("Incluído com sucesso!");
     } catch (error) {
       console.log(error);
       const errorMessage = error.response?.data?.message;
@@ -71,7 +65,7 @@ export function SearchText({ setClassroom, classroom }) {
         value={search}
       />
       {
-        search && texts && (
+        search && hasText && (
           <ContentContainer>
             {
               texts.map((t, index) => (
@@ -93,6 +87,17 @@ export function SearchText({ setClassroom, classroom }) {
                 </TextContainer>
               ))
             }
+          </ContentContainer>
+        )
+      }
+      {
+        search && !hasText && (
+          <ContentContainer>
+            <TextContainer 
+              $index={0}
+            >
+              <p>Nenhum livro encontrado!</p>
+            </TextContainer>
           </ContentContainer>
         )
       }

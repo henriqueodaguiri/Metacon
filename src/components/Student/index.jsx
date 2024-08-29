@@ -19,10 +19,11 @@ import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { toast } from "react-toastify";
 
-export function Student({ index, student, setClassroom, classroom }) {
+export function Student({ index, student, setClassroom, classroom, texts }) {
   const [showPerformance, setShowPerformance] = useState(false);
   const studentAvatarUrl = student?.avatarUrl ? `${student.avatarUrl}` : studentPlaceholder;
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [undoneTexts, setUndoneTexts] = useState([]);
 
   async function confirmDelete() {
     const studentIdToRemove = student.id; 
@@ -54,7 +55,9 @@ export function Student({ index, student, setClassroom, classroom }) {
 
   useEffect(() => {
     Modal.setAppElement("#__next");
-  }, []);
+    const undoneTexts = texts.filter(t => !student.performances.map(x => x.text.id).includes(t.id));
+    setUndoneTexts(undoneTexts);
+  }, [texts]);
 
   return (
     <Container $index={index}>
@@ -62,11 +65,11 @@ export function Student({ index, student, setClassroom, classroom }) {
         <ContentContainer $grade={student.grade}>
           <AvatarContainer>
             <Image
-            src={studentAvatarUrl} 
-            alt={`Foto de ${student.name}`}
-            fill 
-            quality={100}
-            priority
+              src={studentAvatarUrl} 
+              alt={`Foto de ${student.name}`}
+              fill 
+              quality={100}
+              priority
             />
           </AvatarContainer>
           <p>
@@ -97,11 +100,24 @@ export function Student({ index, student, setClassroom, classroom }) {
                     <Performance
                       key={i}
                       $index={index}
+                      $grade={p.grade}
                     >
                       <p>{p.text.name}</p>
-                      <p>{p.grade}</p>
+                      <p><span>{p.grade}</span></p>
                     </Performance>
                   )
+                )
+              }
+              {
+                undoneTexts && undoneTexts.length > 0 && undoneTexts.map((t, i) =>
+                  <Performance
+                    key={i}
+                    $index={index}
+                    $grade={0}
+                  >
+                    <p>{t.name}</p>
+                    <p><span>Pendente</span></p>
+                  </Performance>
                 )
               }
             </PerformanceContainer>

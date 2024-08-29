@@ -53,7 +53,7 @@ export const Header = styled.div`
 `;
 
 export const CoverContainer = styled.div`
-  width: ${({ $newText }) => $newText ? "8rem" : "18rem" }; 
+  width: ${({ $newText }) => $newText ? "8rem" : "16rem" }; 
   height: ${({ $newText }) => $newText ? "8rem" : "20rem" }; 
   position: relative;
   margin: 0.8rem 0;

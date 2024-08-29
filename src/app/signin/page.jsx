@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Container, WallpaperContainer, LoginContainer } from "./styles";
 import { useAuth } from "@/context/auth";
@@ -21,6 +21,20 @@ const SignIn = () => {
       window.location.href = "/";
     }
   }
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Enter") {
+        handleLogin();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [email, password]);
 
   return (
     <Container>

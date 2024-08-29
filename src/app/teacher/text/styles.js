@@ -9,10 +9,11 @@ export const Container = styled.div`
 `;
 
 export const ContentContainer = styled.div`
-  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.4rem;
+  margin-bottom: 2.4rem;
   width: 100%;
-  overflow-y: auto;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap; 
+  max-width: 1200px; 
+  margin: 2.4rem auto;
 `;

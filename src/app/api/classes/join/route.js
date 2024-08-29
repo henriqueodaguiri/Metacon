@@ -4,14 +4,11 @@ import { verifyToken } from "@/middleware/authMiddleware";
 import { verifyRole } from "@/middleware/roleMiddleware";
 const classController = require("@/controllers/classController");
 
-export async function DELETE(req, { params }) {
+export async function POST(req) {
   try {
-    const tokenInfo = verifyToken(req);
-    verifyRole(tokenInfo, roles.TEACHER);
-    const classId = Number(params.classId);
-    const studentId = Number(params.studentId);
-
-    return await classController.removeStudent(classId, studentId, tokenInfo.userId);
+    const tokenInfo =  verifyToken(req);
+    verifyRole(tokenInfo, roles.STUDENT);
+    return await classController.join(req, tokenInfo.userId);
   } catch(error) {
     return handleError(error);
   }

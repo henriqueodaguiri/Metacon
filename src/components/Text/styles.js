@@ -6,6 +6,10 @@ export const Container = styled.div`
   background-color: ${({ theme, $index }) => $index % 2 === 0 ? theme.COLORS.LIGHT_GREY : theme.COLORS.WHITE };
   padding: 1.6rem;
 
+  &.student {
+    cursor: pointer;
+  }
+
   svg {
     cursor: pointer;
   }
@@ -31,6 +35,13 @@ export const TextContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   position: relative;
+
+  > h1 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: ${({ theme, $grade }) => ($grade >= 6 ? theme.COLORS.GREEN : theme.COLORS.DARK_RED)};
+  }
 
   > svg {
     position: absolute;

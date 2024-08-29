@@ -4,25 +4,65 @@ const AppError = require("@/lib/appError");
 const prisma = require("@/lib/prisma");
 const XLSX = require("xlsx");
 
-const getByName = async (name, userId) => {
-  if(!name) {
-    name = "";  
-  }
-
-  const classes = await prisma.class.findMany({
+const join = async({ accessKey, userId }) => {
+  const classroom = await prisma.class.findFirst({
     where: {
-      name: {
-        contains: name,
-        mode: "insensitive"
-      }, 
-      active: true,
-      teacherId: userId
-    },
-    orderBy: {
-      name: "asc"
+      accessKey
     }
   });
 
+  if(!classroom) {
+    throw new AppError("Turma não encontrada!", 404);
+  }
+
+  const checkUserInClass = await prisma.class.findFirst({
+    where: {
+      id: classroom.id,
+      classUser: {
+        some: {
+          studentId: userId
+        }
+      }
+    }
+  });
+
+  if(checkUserInClass) {
+    throw new AppError("Você já pertence a essa turma!", 400);
+  }
+
+  await prisma.classUser.create({
+    data: {
+      classId: classroom.id,
+      studentId: userId
+    }
+  });
+};
+
+const getByName = async (name = "", userId, role) => {
+  const baseQuery = {
+    where: {
+      name: {
+        contains: name,
+        mode: "insensitive",
+      },
+      active: true,
+    },
+    orderBy: {
+      name: "asc",
+    },
+  };
+
+  if (role === roles.TEACHER) {
+    baseQuery.where.teacherId = userId;
+  } else {
+    baseQuery.where.classUser = {
+      some: {
+        studentId: userId,
+      },
+    };
+  }
+
+  const classes = await prisma.class.findMany(baseQuery);
   return classes;
 };
 
@@ -250,26 +290,83 @@ const addText = async (classId, textId, teacherId) => {
   });
 };
 
-const getById = async (id, userId) => {
+const updateGrades = async (classId, teacherId) => {
   const classroom = await prisma.class.findFirst({
     where: {
-      id: id
-    },
+      id: classId
+    }
+  });
+
+  if(!classroom) {
+    throw new AppError("Turma não encontrada!", 404);
+  }
+
+  if(classroom.teacherId !== teacherId) {
+    throw new AppError("Você não é o professor da turma!", 404);
+  }
+
+  const textsFromClassroom = await prisma.classText.findMany({
+    where: {
+      classId
+    }
+  });
+  const textIds = textsFromClassroom.map(x => x.textId);
+
+  if(textIds.length === 0) {
+    throw new AppError("Não há textos nessa turma!", 404);
+  }
+
+  const performances = await prisma.performance.findMany({
+    where: {
+      classId,
+      textId: {
+        in: textIds
+      }
+    }
+  });
+
+  const studentsId = new Set(performances.map(x => x.studentId));
+
+  for(let id of studentsId) {
+    const grade = performances
+      .filter(p => p.studentId === id)
+      .map(p => p.grade)
+      .reduce((sum, curr) => sum + curr, 0);
+      
+    const newGrade = parseFloat((grade / textIds.length).toFixed(2));
+
+    await prisma.user.update({
+      where: {
+        id
+      },
+      data: {
+        grade: newGrade
+      }
+    });
+  }
+};
+
+const getById = async (id, userId, role) => {
+  const isTeacher = role === roles.TEACHER;
+
+  const classroom = await prisma.class.findFirst({
+    where: { id },
     select: {
       id: true,
-      accessKey: true,
+      accessKey: isTeacher,
       name: true,
-      createdAt: true,
-      updatedAt: true,
+      createdAt: isTeacher,
+      updatedAt: isTeacher,
       active: true,
       teacher: {
         select: {
           id: true,
           name: true,
-          email: true
-        }
+          email: true,
+        },
       },
       classUser: {
+        where: isTeacher ? {} : { studentId: userId },
         select: {
           student: {
             select: {
@@ -278,9 +375,7 @@ const getById = async (id, userId) => {
               avatarUrl: true,
               grade: true,
               performances: {
-                where: {
-                  classId: id 
-                },
+                where: { classId: id },
                 select: {
                   id: true,
                   grade: true,
@@ -289,16 +384,16 @@ const getById = async (id, userId) => {
                       text: {
                         select: {
                           id: true,
-                          name: true
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+                          name: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       },
       classText: {
         select: {
@@ -307,43 +402,45 @@ const getById = async (id, userId) => {
               id: true,
               name: true,
               difficulty: true,
-              coverUrl: true
-            }
-          }
-        }
-      }
-    }
+              coverUrl: true,
+            },
+          },
+        },
+      },
+    },
   });
 
   if (!classroom) {
     throw new AppError("Turma não encontrada!", 404);
   }
 
-  if (classroom.teacher.id !== userId) {
-    throw new AppError("Você não é o professor dessa turma!", 404);
+  if (isTeacher && classroom.teacher.id !== userId) {
+    throw new AppError("Você não é o professor dessa turma!", 403);
   }
 
-  const students = classroom.classUser.map(x => {
-    const performances = x.student.performances.map(performance => ({
+  if (!isTeacher && (!classroom.classUser || classroom.classUser.length === 0)) {
+    throw new AppError("Você não pertence a essa turma!", 403);
+  }
+
+  const students = classroom.classUser.map((x) => ({
+    ...x.student,
+    performances: x.student.performances.map((performance) => ({
       id: performance.id,
       grade: performance.grade,
-      text: performance.classText.text 
-    }));
-    return {
-      ...x.student,
-      performances
-    };
-  });
-  students.sort((a, b) => a.name.localeCompare(b.name));
-  const texts = classroom.classText.map(x => x.text);
-  texts.sort((a, b) => a.name.localeCompare(b.name));
-  delete classroom.classUser; 
-  delete classroom.classText; 
+      text: performance.classText.text,
+    })),
+  })).sort((a, b) => a.name.localeCompare(b.name));
+
+  const texts = classroom.classText.map((x) => x.text)
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  delete classroom.classUser;
+  delete classroom.classText;
 
   return {
     ...classroom,
     texts,
-    students
+    students,
   };
 };
 
@@ -434,5 +531,7 @@ module.exports = {
   removeStudent,
   removeText,
   addText,
-  createExcel
+  createExcel,
+  join,
+  updateGrades
 };

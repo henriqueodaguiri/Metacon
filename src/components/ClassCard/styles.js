@@ -13,6 +13,10 @@ export const CardContainer = styled.div`
   width: 240px;
   height: 240px;
 
+  &.student {
+    cursor: pointer;
+  }
+
   > p {
     margin: 0.8rem 0;
   }
@@ -56,7 +60,7 @@ export const CoverContainer = styled.div`
   position: relative;
 
   > img {
-    cursor: ${({ $new }) => $new ? "pointer" : "default" };
+    cursor: ${({ $new, $student }) => ($new || $student) ? "pointer" : "default" };
     border-radius: 20px;
     margin-top: ${({ $new }) => $new ? "3.2rem" : "0" }; 
   }

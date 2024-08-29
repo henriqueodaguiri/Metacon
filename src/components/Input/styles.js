@@ -6,7 +6,11 @@ export const Container = styled.div`
   align-items: center;
   background-color: ${({ $bgColor, theme }) => $bgColor || theme.COLORS.LIGHT };
   margin: ${({ $margin }) => $margin || 0 };
-  border: 2px solid ${({ $borderColor, theme }) => $borderColor || theme.COLORS.PURPLE};
+  border: ${({ $border, $borderColor, theme }) => 
+    $border 
+      ? $border 
+      : `2px solid ${$borderColor || theme.COLORS.PURPLE}`
+  };
   border-radius: 20px;
   padding: 1.6rem;
 `;
