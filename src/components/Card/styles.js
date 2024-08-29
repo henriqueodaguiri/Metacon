@@ -1,10 +1,6 @@
 "use client";
 import styled from "styled-components";
 
-export const Container = styled.div`
-  cursor: pointer;
-`;
-
 export const CardContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -30,6 +26,8 @@ export const HeaderContainer = styled.div`
 `;
 
 export const Header = styled.div`
+  position: relative;
+  width: 100%;
   padding: 1.6rem 2.4rem;
   text-align: center;
   color: ${({ theme }) => theme.COLORS.WHITE };
@@ -38,13 +36,25 @@ export const Header = styled.div`
     color: ${({ theme }) => theme.COLORS.WHITE };
     font-size: 2.4rem;
   }
+
+  > svg {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    cursor: pointer;
+    color: ${({ theme }) => theme.COLORS.WHITE };
+
+    &:hover {
+      filter: brightness(0.9);
+    }
+  }
 `;
 
 export const CoverContainer = styled.div`
+  cursor: pointer;
   width: ${({ $newText }) => $newText ? "10rem" : "18rem" }; 
   height: ${({ $newText }) => $newText ? "10rem" : "20rem" }; 
   position: relative;
-  cursor: pointer;
   margin: 0.8rem 0;
 
   > img {
