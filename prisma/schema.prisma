@@ -14,6 +14,7 @@ model User {
   password     String
   avatarUrl    String?       @map("avatar_url")
   role         Role          @default(STUDENT)
+  grade        Float?
   createdAt    DateTime      @default(now()) @map("created_at")
   updatedAt    DateTime      @updatedAt @map("updated_at")
   classes      Class[]
@@ -26,12 +27,13 @@ model User {
 
 model Class {
   id        Int         @id @default(autoincrement())
+  accessKey String      @map("access_key")
   name      String
   teacher   User        @relation(fields: [teacherId], references: [id])
   teacherId Int         @map("teacher_id")
-  color     String?
   createdAt DateTime    @default(now()) @map("created_at")
   updatedAt DateTime    @updatedAt @map("updated_at")
+  active    Boolean     @default(true)
   classUser ClassUser[]
   classText ClassText[]
 
@@ -61,6 +63,7 @@ model Text {
   coverUrl     String?       @map("cover_url")
   createdAt    DateTime      @default(now()) @map("created_at")
   updatedAt    DateTime      @updatedAt @map("updated_at")
+  active       Boolean       @default(true)
   classText    ClassText[]
   performances Performance[]
   questions    Question[]
@@ -106,6 +109,7 @@ model Question {
   statement String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+  active    Boolean  @default(true)
   choices   Choice[]
   answers   Answer[]
 

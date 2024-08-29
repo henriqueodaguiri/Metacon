@@ -1,6 +1,6 @@
+const generateRandomCode = require("../src/lib/generateRandomCode");
 const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcrypt");
-
 const prisma = new PrismaClient();
 
 async function createUsers() {
@@ -36,10 +36,12 @@ async function createClasses() {
   });
 
   for (let i = 1; i <= 2; i++) {
+    const accessKey = generateRandomCode(8);
     const newClass = await prisma.class.create({
       data: {
         name: `Class ${i}`,
         teacherId: teacher.id,
+        accessKey
       },
     });
 
@@ -155,6 +157,9 @@ async function createPerformance() {
   const texts = await prisma.text.findMany();
 
   for (const student of students) {
+    let totalStudentValue = 0;
+    let performanceCount = 0;
+
     for (const text of texts) {
       const questions = await prisma.question.findMany({
         where: {
@@ -193,9 +198,23 @@ async function createPerformance() {
           value: totalValue,
         },
       });
+
+      totalStudentValue += totalValue;
+      performanceCount++;
     }
+
+    const averageGrade = totalStudentValue / performanceCount;
+    await prisma.user.update({
+      where: {
+        id: student.id,
+      },
+      data: {
+        grade: averageGrade, 
+      },
+    });
   }
 }
+
 
 async function main() {
   await createUsers();

@@ -17,13 +17,15 @@ export default function RootLayout({ children }) {
         <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet"/>
       </head>
       <body>
-        <ThemeProvider theme={theme}>
-          <ToastContainer />
-          <AuthProvider>
-            <GlobalStyle />
-            {children}
-          </AuthProvider>
-        </ThemeProvider>
+        <div id="__next">
+          <ThemeProvider theme={theme}>
+            <ToastContainer />
+            <AuthProvider>
+              <GlobalStyle />
+              {children}
+            </AuthProvider>
+          </ThemeProvider>
+        </div>
       </body>
     </html>
   );

@@ -4,27 +4,36 @@ const AppError = require("@/lib/appError");
 
 const index = async (req, name) => {
   const texts = await textService.getByName(name);
-  return createResponse({ body: { texts: texts }, status: 201 });
+  return createResponse({ body: { texts: texts }, status: 200 });
+};
+
+const show = async (textId) => {
+  const text = await textService.getById(textId);
+  return createResponse({ body: { text }, status: 200 });
+};
+
+const destroy = async (textId) => {
+  await textService.deleteById(textId);
+  return createResponse({ body: { message: "Inativado com sucesso!"}, status: 200 });
 };
 
 const create = async (req) => {
-  const { name, difficulty, content } = await req.json();
-  if(!name || !difficulty|| !content) {
+  const { name, difficulty, content, questions } = await req.json();
+  if(!name || !difficulty || !content || !questions || questions.length === 0) {
     throw new AppError("Dados obrigatórios não informados!", 400);
   }
 
-  const id = await textService.create({ name, difficulty, content });
+  const id = await textService.create({ name, difficulty, content, questions });
   return createResponse({ body: { id }, status: 201 });
 };
 
-const update = async (req) => {
-  const { id, name, difficulty, content } = await req.json();
-  if(!id || !name|| !difficulty|| !content) {
+const update = async (req, textId) => {
+  const { name, difficulty, content, questions } = await req.json();
+  if(!textId || !name || !difficulty || !content || !questions || questions.length === 0) {
     throw new AppError("Dados obrigatórios não informados!", 400);
   }
 
-  await textService.update({ id, name, difficulty, content });
-
+  await textService.update({ id: textId, name, difficulty, content, questions });
   return createResponse({ status: 201 });
 };
 
@@ -44,5 +53,7 @@ module.exports = {
   updateCover,
   create,
   update,
-  index
+  index,
+  show,
+  destroy
 };

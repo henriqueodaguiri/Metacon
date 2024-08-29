@@ -1,12 +1,11 @@
-"use client";
-import { useState } from "react";
-import { FaPlus, FaMinus, FaTrashAlt } from "react-icons/fa";
-import { Container, Table, TableRow, TableHeader, TableCell, ToggleButton, OptionsRow } from "./styles";
+import { Fragment, useState } from "react";
+import { FaEye, FaEyeSlash, FaTrashAlt, FaPencilAlt } from "react-icons/fa";
+import { Container, Table, TableRow, TableHeader, TableCell, ToggleButton, ChoicesRow } from "./styles";
 
-export function QuestionsTable({ questions, setQuestions }) {
+export function QuestionsTable({ questions, setQuestions, handleEdit }) {
   const [expandedRows, setExpandedRows] = useState([]);
 
-  function handleToggleOptions(index) {
+  function handleToggleChoices(index) {
     if (expandedRows.includes(index)) {
       setExpandedRows(expandedRows.filter((i) => i !== index));
     } else {
@@ -17,7 +16,7 @@ export function QuestionsTable({ questions, setQuestions }) {
   function handleRemove(index) {
     setQuestions((prevQuestions) => prevQuestions.filter((_, i) => i !== index));
   }
-
+  
   return (
     <Container>
       <Table>
@@ -29,37 +28,36 @@ export function QuestionsTable({ questions, setQuestions }) {
         </thead>
         <tbody>
           {questions.map((question, i) => (
-            <>
-              <TableRow key={i}>
-                <TableCell>{`${i + 1} - ${question.question}`}</TableCell>
+            <Fragment key={i}>
+              <TableRow>
+                <TableCell>{`${i + 1} - ${question.statement}`}</TableCell>
                 <TableCell>
-                  <ToggleButton onClick={() => handleToggleOptions(i)}>
-                    {expandedRows.includes(i) ? <FaMinus /> : <FaPlus />}
+                  <ToggleButton onClick={() => handleToggleChoices(i)}>
+                    {expandedRows.includes(i) ? <FaEyeSlash /> : <FaEye />}
                   </ToggleButton>
+                  <FaPencilAlt onClick={() => handleEdit(i)}/>
                   <FaTrashAlt onClick={() => handleRemove(i)}/>
                 </TableCell>
               </TableRow>
               {expandedRows.includes(i) && (
-                <OptionsRow>
+                <ChoicesRow>
                   <td colSpan="2">
                     <ul>
-                      <li className={question.correctOption === "A" ? "correct" : "incorrect"}>
-                        {question.optionA}
-                      </li>
-                      <li className={question.correctOption === "B" ? "correct" : "incorrect"}>
-                        {question.optionB}
-                      </li>
-                      <li className={question.correctOption === "C" ? "correct" : "incorrect"}>
-                        {question.optionC}
-                      </li>
-                      <li className={question.correctOption === "D" ? "correct" : "incorrect"}>
-                        {question.optionD}
-                      </li>
+                      {
+                        question.choices.map((choice, i) => (
+                          <li 
+                            key={i} 
+                            className={choice.isCorrect ? "correct" : "incorrect"}
+                          >
+                           {`${String.fromCharCode(97 + i)}) ${choice.content}`}
+                          </li>
+                        ))
+                      }
                     </ul>
                   </td>
-                </OptionsRow>
+                </ChoicesRow>
               )}
-            </>
+            </Fragment>
           ))}
         </tbody>
       </Table>

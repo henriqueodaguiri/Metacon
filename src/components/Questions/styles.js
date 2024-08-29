@@ -11,18 +11,3 @@ export const Container = styled.div`
     align-self: flex-end;
   }
 `;
-
-export const QuestionHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-export const QuestionContainer = styled.div`
-  border: 2px solid ${({ theme }) => theme.COLORS.PURPLE};
-  border-radius: 20px;
-  padding: 2rem;
-
-  > ul {
-    padding-left: 2rem;
-  }
-`;

@@ -4,19 +4,19 @@ import styled from "styled-components";
 export const Container = styled.div`
   margin-top: 2rem;
   border-radius: 20px;
+  overflow: hidden; 
+  border: 2px solid ${({ theme }) => theme.COLORS.PURPLE}; 
 `;
 
 export const Table = styled.table`
   width: 100%;
-  border-collapse: collapse;
-
-  tbody, thead {
-    border: 2px solid ${({ theme }) => theme.COLORS.PURPLE};
-  }
+  border-collapse: collapse; 
+  background-color: ${({ theme }) => theme.COLORS.LIGHT};
 `;
 
 export const TableRow = styled.tr`
   border-bottom: 1px solid ${({ theme }) => theme.COLORS.GREY};
+  background-color: ${({ theme }) => theme.COLORS.WHITE};
 `;
 
 export const TableCell = styled.td`
@@ -32,6 +32,7 @@ export const TableCell = styled.td`
 
   svg {
     cursor: pointer;
+    margin-right: 1rem;
   }
 
   svg:hover {
@@ -46,18 +47,20 @@ export const TableHeader = styled.th`
   background-color: ${({ theme }) => theme.COLORS.LIGHT};
   border-bottom: none;
   width: 100%;
+  &:last-child {
+    text-align: center;
+  }
 `;
 
 export const ToggleButton = styled.button`
   background: none;
-  margin-right: 1rem;
 
   &:hover {
     color: ${({ theme }) => theme.COLORS.VIOLET};
   }
 `;
 
-export const OptionsRow = styled.tr`
+export const ChoicesRow = styled.tr`
   background-color: ${({ theme }) => theme.COLORS.LIGHT};
 
   li {

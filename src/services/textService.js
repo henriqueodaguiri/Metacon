@@ -14,77 +14,234 @@ const getByName = async (name) => {
       name: {
         contains: name,
         mode: "insensitive"
-      }
+      }, 
+      active: true
     },
     orderBy: {
-        name: "asc"
-      }
+      name: "asc"
+    }
   });
   texts.map(x => x.difficulty = difficulties[x.difficulty]);
 
   return texts;
 };
 
-const getTextById = async (id) => {
+const deleteById = async (id) => {
   const text = await prisma.text.findFirst({
     where: {
       id
     }
   });
 
-  return text;
-};
-
-const create = async ({ name, difficulty, content }) => {
-  const textAlreadyRegister = await prisma.text.findFirst({
-    where: {
-      name
-    }
-  });
-
-  if (textAlreadyRegister) {
-    throw new AppError("Já existe um texto com esse nome!", 400);
-  }
-
-  const newText = await prisma.text.create({
-    data: {
-      name,
-      difficulty,
-      content
-    }
-  });
-
-  return newText.id;
-};
-
-const update = async ({ id, name, difficulty, content }) => {
-  const checkName = await prisma.text.findFirst({
-    where: {
-      name: name,
-      id: {
-        not: id
-      }
-    }
-  });
-
-  if(checkName) {
-    throw new AppError("Esse nome já está vinculado a outro texto!");
+  if(!text) {
+    throw new AppError("Texto não encontrado!", 404);
   }
 
   await prisma.text.update({
     where: {
-      id: id
+      id: text.id
     },
     data: {
-      name: name,
-      difficulty: difficulty,
-      content: content
+      active: false
     }
   });
 };
 
+const getById = async (id) => {
+  const text = await prisma.text.findFirst({
+    where: {
+      id
+    }
+  });
+
+  if(!text) {
+    throw new AppError("Texto não encontrado!", 404);
+  }
+
+  const questions = await prisma.question.findMany({
+    where: {
+      textId: text.id,
+      active: true
+    },
+    orderBy: {
+      createdAt: "asc"
+    }
+  });
+
+  for(const question of questions) {
+    const choices = await prisma.choice.findMany({
+      where: {
+        questionId: question.id
+      }
+    });
+
+    question.choices = choices;
+  }
+
+  const textObj = {
+    text,
+    questions
+  };
+
+  return textObj;
+};
+
+const validateName = async(id, name) => {
+  let text;
+  if(id) {
+    text = await prisma.text.findFirst({
+      where: {
+        name: name,
+        id: {
+          not: id
+        }
+      }
+    });
+  } else {
+    text = await prisma.text.findFirst({
+      where: {
+        name
+      }
+    });
+  }
+
+  if(text) {
+    throw new AppError("Esse nome já está vinculado a outro texto!");
+  }
+};
+
+const create = async ({ name, difficulty, content, questions }) => {
+  await validateName(null, name);
+  const result = await prisma.$transaction(async (prisma) => {
+    const newText = await prisma.text.create({
+      data: {
+        name,
+        difficulty,
+        content
+      }
+    });
+
+    for (const question of questions) {
+      const newQuestion = await prisma.question.create({
+        data: {
+          statement: question.statement,
+          textId: newText.id, 
+        }
+      });
+
+      for(const choice of question.choices) {
+        await prisma.choice.create({
+          data: {
+            questionId: newQuestion.id,
+            isCorrect: choice.isCorrect,
+            content: choice.content
+          }
+        });
+      }
+    }
+
+    return newText.id;
+  });
+
+  return result;
+};
+
+const createNewQuestions = async(questions, id) => {
+  for (const question of questions.filter(q => !q.id)) { 
+    const newQuestion = await prisma.question.create({
+      data: {
+        statement: question.statement,
+        textId: id, 
+      }
+    });
+
+    for(const choice of question.choices) {
+      await prisma.choice.create({
+        data: {
+          questionId: newQuestion.id,
+          isCorrect: choice.isCorrect,
+          content: choice.content
+        }
+      });
+    }
+  }
+};
+
+const inactivateRemovedQuestions = async(questions, oldQuestions) => {
+  oldQuestions = oldQuestions.filter(oldQ => 
+    !questions.some(newQ => newQ.id === oldQ.id)
+  );
+
+  for (const removedQuestion of oldQuestions) {
+    await prisma.question.update({
+      where: {
+        id: removedQuestion.id
+      },
+      data: {
+        active: false
+      }
+    });
+  }
+};
+
+const updateQuestions = async(questions, oldQuestions) => {
+  questions = questions.filter(upQ => 
+    oldQuestions.some(oldQ => oldQ.id === upQ.id)
+  );
+
+  for (const updatedQuestion of questions) {
+    await prisma.question.update({
+      where: {
+        id: updatedQuestion.id
+      },
+      data: {
+        statement: updatedQuestion.statement
+      }
+    });
+
+    for(const choice of updatedQuestion.choices) {
+      await prisma.choice.update({
+        where: {
+          id: choice.id
+        },
+        data: {
+          isCorrect: choice.isCorrect,
+          content: choice.content
+        }
+      });
+    }
+  }
+};
+
+const update = async ({ id, name, difficulty, content, questions }) => {
+  await validateName(id, name);
+
+  const oldQuestions = await prisma.question.findMany({
+    where: {
+      textId: id
+    }
+  });
+
+  await prisma.$transaction(async (prisma) => {
+    await prisma.text.update({
+      where: {
+        id: id
+      },
+      data: {
+        name: name,
+        difficulty: difficulty,
+        content: content
+      }
+    });
+  
+    await createNewQuestions(questions, id);
+    await inactivateRemovedQuestions(questions, oldQuestions);
+    await updateQuestions(questions, oldQuestions);
+  });
+};
+
 const updateCover = async ({ textId, file }) => {
-  const text = await getTextById(textId);
+  const text = await getById(textId);
   if(!text) {
     throw new AppError("Não existe texto com esse ID!", 400);
   }
@@ -114,7 +271,8 @@ const updateCover = async ({ textId, file }) => {
 module.exports = {
   create,
   update,
-  getTextById,
+  getById,
   updateCover,
-  getByName
+  getByName,
+  deleteById
 };

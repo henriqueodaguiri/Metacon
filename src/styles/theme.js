@@ -8,9 +8,11 @@ const theme = {
     BLACK: "#011c27",
     WHITE: "#f5f5f5",
     LIGHT: "#FFF",
+    LIGHT_GREY: "#ddd",
     GREY: "#888",
     DARK_GREY: "#555",
-    RED: "#E57373"
+    RED: "#E57373",
+    DARK_RED: "#D32F2F"
   }
 };
 
