@@ -26,21 +26,23 @@ export const HeaderContainer = styled.div`
 `;
 
 export const Header = styled.div`
-  position: relative;
   width: 100%;
   padding: 1.6rem 2.4rem;
-  text-align: center;
   color: ${({ theme }) => theme.COLORS.WHITE };
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
 
   > h1 {
     color: ${({ theme }) => theme.COLORS.WHITE };
     font-size: 2.4rem;
+    flex: 1; 
+    text-align: center;
+    word-wrap: break-word; 
+    word-break: break-word;
   }
 
   > svg {
-    position: absolute;
-    top: 20px;
-    right: 20px;
     cursor: pointer;
     color: ${({ theme }) => theme.COLORS.WHITE };
 

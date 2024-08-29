@@ -118,7 +118,7 @@ async function createAnswers() {
   const students = await prisma.user.findMany({
     where: {
       id: {
-        in: Array.from({ length: 15 }, (_, i) => i + 2), // user_id 2 to 16
+        in: Array.from({ length: 15 }, (_, i) => i + 2),  
       },
     },
   });
@@ -148,22 +148,22 @@ async function createPerformance() {
   const students = await prisma.user.findMany({
     where: {
       id: {
-        in: Array.from({ length: 15 }, (_, i) => i + 2), // user_id 2 to 16
+        in: Array.from({ length: 15 }, (_, i) => i + 2), 
       },
       role: "STUDENT",
     },
   });
 
-  const texts = await prisma.text.findMany();
+  const classTexts = await prisma.classText.findMany(); 
 
   for (const student of students) {
     let totalStudentValue = 0;
     let performanceCount = 0;
 
-    for (const text of texts) {
+    for (const classText of classTexts) {
       const questions = await prisma.question.findMany({
         where: {
-          textId: text.id,
+          textId: classText.textId,
         },
       });
 
@@ -194,8 +194,9 @@ async function createPerformance() {
       await prisma.performance.create({
         data: {
           studentId: student.id,
-          textId: text.id,
-          value: totalValue,
+          classId: classText.classId, 
+          textId: classText.textId,  
+          grade: totalValue,
         },
       });
 
@@ -209,12 +210,11 @@ async function createPerformance() {
         id: student.id,
       },
       data: {
-        grade: averageGrade, 
+        grade: averageGrade,
       },
     });
   }
 }
-
 
 async function main() {
   await createUsers();

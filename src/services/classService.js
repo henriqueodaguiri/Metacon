@@ -50,6 +50,154 @@ const deleteById = async (id, userId) => {
   });
 };
 
+const removeStudent = async (classId, studentId, teacherId) => {
+  const classroom = await prisma.class.findFirst({
+    where: {
+      id: classId
+    }
+  });
+
+  if(!classroom) {
+    throw new AppError("Turma não encontrada!", 404);
+  }
+
+  if(classroom.teacherId !== teacherId) {
+    throw new AppError("Você não é o professor da turma!", 404);
+  }
+
+  const student = await prisma.user.findFirst({
+    where: {
+      id: studentId,
+      role: roles.STUDENT
+    }
+  });
+
+  if(!student) {
+    throw new AppError("Aluno não encontrado!", 404);
+  }
+
+  const classUser = await prisma.classUser.findFirst({
+    where: {
+      classId,
+      studentId
+    }
+  });
+
+  if(!classUser) {
+    throw new AppError("Aluno não faz parte da turma!", 404);
+  }
+  
+  await prisma.classUser.delete({
+    where: {
+      classId_studentId: {
+        classId,
+        studentId
+      }
+    }
+  });
+};
+
+const removeText = async (classId, textId, teacherId) => {
+  const classroom = await prisma.class.findFirst({
+    where: {
+      id: classId
+    }
+  });
+
+  if(!classroom) {
+    throw new AppError("Turma não encontrada!", 404);
+  }
+
+  if(classroom.teacherId !== teacherId) {
+    throw new AppError("Você não é o professor da turma!", 404);
+  }
+
+  const text = await prisma.text.findFirst({
+    where: {
+      id: textId
+    }
+  });
+
+  if(!text) {
+    throw new AppError("Texto não encontrado!", 404);
+  }
+
+  const classText = await prisma.classText.findFirst({
+    where: {
+      classId,
+      textId
+    }
+  });
+
+  if(!classText) {
+    throw new AppError("Texto não faz parte da turma!", 404);
+  }
+
+  const performances = await prisma.performance.findFirst({
+    where: {
+      textId,
+      classId
+    }
+  });
+
+  if(performances) {
+    throw new AppError("Não é possível excluir pois já houveram respostas!", 404);
+  }
+
+  await prisma.classText.delete({
+    where: {
+      classId_textId: {
+        classId,
+        textId
+      }
+    }
+  });
+};
+
+const addText = async (classId, textId, teacherId) => {
+  const classroom = await prisma.class.findFirst({
+    where: {
+      id: classId
+    }
+  });
+
+  if(!classroom) {
+    throw new AppError("Turma não encontrada!", 404);
+  }
+
+  if(classroom.teacherId !== teacherId) {
+    throw new AppError("Você não é o professor da turma!", 404);
+  }
+
+  const text = await prisma.text.findFirst({
+    where: {
+      id: textId
+    }
+  });
+
+  if(!text) {
+    throw new AppError("Texto não encontrado!", 404);
+  }
+
+  const classText = await prisma.classText.findFirst({
+    where: {
+      classId,
+      textId
+    }
+  });
+
+  if(classText) {
+    throw new AppError("Texto já faz parte da turma!", 404);
+  }
+
+  await prisma.classText.create({
+    data: {
+      classId,
+      textId
+    }
+  });
+};
+
 const getById = async (id, userId) => {
   const classroom = await prisma.class.findFirst({
     where: {
@@ -78,13 +226,20 @@ const getById = async (id, userId) => {
               avatarUrl: true,
               grade: true,
               performances: {
+                where: {
+                  classId: id 
+                },
                 select: {
                   id: true,
-                  value: true,
-                  text: {
+                  grade: true,
+                  classText: {
                     select: {
-                      id: true,
-                      name: true
+                      text: {
+                        select: {
+                          id: true,
+                          name: true
+                        }
+                      }
                     }
                   }
                 }
@@ -109,15 +264,27 @@ const getById = async (id, userId) => {
   });
 
   if (!classroom) {
-    throw new AppError("Class not found!", 404);
+    throw new AppError("Turma não encontrada!", 404);
   }
 
   if (classroom.teacher.id !== userId) {
-    throw new AppError("You are not the teacher of this class!", 404);
+    throw new AppError("Você não é o professor dessa turma!", 404);
   }
 
-  const students = classroom.classUser.map(x => x.student);
+  const students = classroom.classUser.map(x => {
+    const performances = x.student.performances.map(performance => ({
+      id: performance.id,
+      grade: performance.grade,
+      text: performance.classText.text 
+    }));
+    return {
+      ...x.student,
+      performances
+    };
+  });
+  students.sort((a, b) => a.name.localeCompare(b.name));
   const texts = classroom.classText.map(x => x.text);
+  texts.sort((a, b) => a.name.localeCompare(b.name));
   delete classroom.classUser; 
   delete classroom.classText; 
 
@@ -211,5 +378,8 @@ module.exports = {
   update,
   getById,
   getByName,
-  deleteById
+  deleteById,
+  removeStudent,
+  removeText,
+  addText
 };

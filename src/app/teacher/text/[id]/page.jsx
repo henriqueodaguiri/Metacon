@@ -171,10 +171,7 @@ const EditText = () => {
       {loading && <LoadingPage />}
       <Header />
       <ContentContainer>
-<<<<<<< HEAD
         <h1>Dados da Leitura</h1>
-=======
->>>>>>> f454987bbb06b22697968170ac684729f36c9e24
         <BackButtonContainer onClick={() => router.back()}>
           <IoMdArrowRoundBack size={60}/>
         </BackButtonContainer>
@@ -213,10 +210,7 @@ const EditText = () => {
       </ContentContainer>
 
       <ContentContainer>
-<<<<<<< HEAD
         <h2>Perguntas</h2>
-=======
->>>>>>> f454987bbb06b22697968170ac684729f36c9e24
         <FieldsContainer>
           <Questions
             questions={questions}

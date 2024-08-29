@@ -2,7 +2,7 @@ import FireBaseStorage from "@/lib/fireBaseStorage";
 const AppError = require("@/lib/appError");
 const prisma = require("@/lib/prisma");
 const difficulties = require("@/lib/difficulties");
-const { getImageNameFromFireBaseUrl } = require("@/lib/urlHelper");
+const getImageNameFromFireBaseUrl = require("@/lib/urlHelper");
 
 const getByName = async (name) => {
   if(!name) {
@@ -215,7 +215,7 @@ const updateQuestions = async(questions, oldQuestions) => {
 
 const update = async ({ id, name, difficulty, content, questions }) => {
   await validateName(id, name);
-
+  
   const oldQuestions = await prisma.question.findMany({
     where: {
       textId: id

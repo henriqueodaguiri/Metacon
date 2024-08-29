@@ -80,24 +80,27 @@ enum Difficulty {
 }
 
 model ClassText {
-  class   Class @relation(fields: [classId], references: [id])
-  classId Int   @map("class_id")
-  text    Text  @relation(fields: [textId], references: [id])
-  textId  Int   @map("text_id")
+  class       Class         @relation(fields: [classId], references: [id])
+  classId     Int           @map("class_id")
+  text        Text          @relation(fields: [textId], references: [id])
+  textId      Int           @map("text_id")
+  Performance Performance[]
 
   @@id([classId, textId])
   @@map("class_text")
 }
 
 model Performance {
-  id        Int      @id @default(autoincrement())
-  student   User     @relation(fields: [studentId], references: [id])
-  studentId Int      @map("student_id")
-  text      Text     @relation(fields: [textId], references: [id])
-  textId    Int      @map("text_id")
-  value     Float
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id        Int       @id @default(autoincrement())
+  student   User      @relation(fields: [studentId], references: [id])
+  studentId Int       @map("student_id")
+  classId   Int       @map("class_id")
+  textId    Int       @map("text_id")
+  classText ClassText @relation(fields: [classId, textId], references: [classId, textId])
+  grade     Float
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  Text      Text      @relation(fields: [textId], references: [id])
 
   @@map("performances")
 }

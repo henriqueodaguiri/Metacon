@@ -18,10 +18,13 @@ export const ContentContainer = styled.div`
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.5);
   padding: 2rem;
-  gap: 1.6rem;
   position: relative;
 
-  > h1 {
+  h1 {
+    margin-bottom: 4rem;
+  }
+  
+  h2 {
     margin-bottom: 2rem;
   }
 `;
@@ -64,6 +67,13 @@ export const AccessKeyContainer = styled.div`
   > label {
     padding: 1.6rem;
   }
+`;
+
+export const ItensContainer = styled.div`
+  border-radius: 20px;
+  overflow: hidden;
+  width: 100%;
+  border: 2px solid ${({ theme }) => theme.COLORS.LIGHT_GREY };
 `;
 
 export const AccessKeyWrapper = styled.div`

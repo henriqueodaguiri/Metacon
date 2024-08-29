@@ -2,7 +2,7 @@ import FireBaseStorage from "@/lib/fireBaseStorage";
 const AppError = require("@/lib/appError");
 const prisma = require("@/lib/prisma");
 const bcrypt = require("bcrypt");
-const { getImageNameFromFireBaseUrl } = require("@/lib/urlHelper");
+const getImageNameFromFireBaseUrl = require("@/lib/urlHelper");
 
 const getUserById = async (id) => {
   const user = await prisma.user.findFirst({

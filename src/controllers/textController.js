@@ -34,7 +34,7 @@ const update = async (req, textId) => {
   }
 
   await textService.update({ id: textId, name, difficulty, content, questions });
-  return createResponse({ status: 201 });
+  return createResponse({ status: 200 });
 };
 
 const updateCover = async (req, textId) => {
@@ -46,7 +46,7 @@ const updateCover = async (req, textId) => {
   }
 
   const uniqueFileName = await textService.updateCover({ textId, file });
-  return createResponse({ body: { cover: uniqueFileName },status: 201 });
+  return createResponse({ body: { cover: uniqueFileName }, status: 200 });
 };
 
 module.exports = {

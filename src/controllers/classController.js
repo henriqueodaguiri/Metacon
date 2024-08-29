@@ -17,6 +17,21 @@ const destroy = async (classId, userId) => {
   return createResponse({ body: { message: "Inativado com sucesso!"}, status: 200 });
 };
 
+const removeStudent = async (classId, studentId, teacherId) => {
+  await classService.removeStudent(classId, studentId, teacherId);
+  return createResponse({ body: { message: "Removido com sucesso!"}, status: 200 });
+};
+
+const removeText = async (classId, textId, teacherId) => {
+  await classService.removeText(classId, textId, teacherId);
+  return createResponse({ body: { message: "Removido com sucesso!"}, status: 200 });
+};
+
+const addText = async (classId, textId, teacherId) => {
+  await classService.addText(classId, textId, teacherId);
+  return createResponse({ body: { message: "Adicionado com sucesso!"}, status: 201 });
+};
+
 const create = async (req, userId) => {
   const { name } = await req.json();
   if(!name) {
@@ -42,5 +57,8 @@ module.exports = {
   update,
   index,
   show,
-  destroy
+  destroy,
+  removeStudent,
+  removeText,
+  addText
 };

@@ -1,15 +1,15 @@
 import handleError from "@/lib/errorHandler";
 import { verifyToken } from "@/middleware/authMiddleware";
 import { verifyTeacherRole } from "@/middleware/teacherMiddleware";
-const textController = require("@/controllers/textController");
+const classController = require("@/controllers/classController");
 
 export async function PUT(req, { params }) {
   try {
     const tokenInfo =  verifyToken(req);
     verifyTeacherRole(tokenInfo);
-    const textId = Number(params.id);
+    const classId = Number(params.classId);
 
-    return await textController.update(req, textId);
+    return await classController.update(req, classId, tokenInfo.userId);
   } catch(error) {
     return handleError(error);
   }
@@ -18,10 +18,10 @@ export async function PUT(req, { params }) {
 export async function GET(req, { params }) {
   try {
     const tokenInfo =  verifyToken(req);
-    verifyTeacherRole(tokenInfo);    
-    const textId = Number(params.id);
+    verifyTeacherRole(tokenInfo);
+    const classId = Number(params.classId);
 
-    return await textController.show(textId);
+    return await classController.show(classId, tokenInfo.userId);
   } catch(error) {
     return handleError(error);
   }
@@ -31,9 +31,9 @@ export async function DELETE(req, { params }) {
   try {
     const tokenInfo =  verifyToken(req);
     verifyTeacherRole(tokenInfo);
-    const textId = Number(params.id);
+    const classId = Number(params.classId);
 
-    return await textController.destroy(textId);
+    return await classController.destroy(classId, tokenInfo.userId);
   } catch(error) {
     return handleError(error);
   }

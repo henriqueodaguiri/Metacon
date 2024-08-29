@@ -10,11 +10,15 @@ import {
   ModalContent, 
   ModalButtonsContent,
   AccessKeyContainer,
-  AccessKeyWrapper
+  AccessKeyWrapper,
+  ItensContainer
 } from "./styles";
 import { Header } from "@/components/Header";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
+import { SearchText } from "@/components/SearchText";
+import { Student } from "@/components/Student";
+import { Text } from "@/components/Text";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { FaRegCopy } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -74,12 +78,12 @@ const EditClass = () => {
         });
   
         const { classroom } = response.data;
-        setClassroom(classroom);
-        setAccessKey(classroom.accessKey);
-        setNewId(classroom.id);
-        setIsNew(false);
-        toast.success("Turma criada com sucesso!");
-        return;
+        toast.success("Turma criada com sucesso!", {
+          onClose: () => {
+            router.push(`/teacher/class/${classroom.id}`);
+          },
+          autoClose: 1000, 
+        });
       } else {
         await api.put(`/classes/${newId}`, {
           name
@@ -111,7 +115,6 @@ const EditClass = () => {
         const result = await api.get(`/classes/${id}`);
         const classroom = result?.data?.classroom;
 
-        console.log(classroom);
         setClassroom(classroom); 
         setName(classroom.name); 
         setAccessKey(classroom.accessKey); 
@@ -130,7 +133,7 @@ const EditClass = () => {
       <Header />
       <ContentContainer>
         <h1>Dados da Turma</h1>
-        <BackButtonContainer onClick={() => router.back()}>
+        <BackButtonContainer onClick={() => router.push("/teacher/class")}>
           <IoMdArrowRoundBack size={60}/>
         </BackButtonContainer>
         <FieldsContainer>
@@ -152,25 +155,56 @@ const EditClass = () => {
           }
         </FieldsContainer>
       </ContentContainer>
-
-      <ContentContainer>
-        <h2>Leituras</h2>
-        {
-          classroom?.texts && classroom?.texts.length > 0 && classroom.texts.map(s => (
-            <p key={s.id}>{s.name}</p>
-          ))
-        }
-      </ContentContainer>
-
-      <ContentContainer>
-        <h2>Alunos</h2>
-        {
-          classroom?.students && classroom?.students.length > 0 && classroom.students.map(s => (
-            <p key={s.id}>{s.name}</p>
-          ))
-        }
-      </ContentContainer>
-
+      {
+        !isNew && (
+          <ContentContainer>
+          <h2>Leituras</h2>
+          <SearchText
+            setClassroom={setClassroom}
+            classroom={classroom}
+          />
+          {
+            classroom?.texts && 
+            classroom?.texts.length > 0 && 
+            (
+              <ItensContainer>
+              {
+                classroom.texts.map((t, i) => (
+                  <Text 
+                    key={i}
+                    index={i}
+                    text={t}
+                    setClassroom={setClassroom}
+                    classroom={classroom}
+                  />
+                ))
+              }
+            </ItensContainer>
+            )
+          }
+        </ContentContainer>
+        )
+      }
+      {
+        classroom?.students && classroom?.students.length > 0 && (
+          <ContentContainer>
+            <h2>Alunos</h2>
+            <ItensContainer>
+            {
+              classroom.students.map((s, i) => (
+                <Student 
+                  key={i}
+                  index={i}
+                  student={s}
+                  setClassroom={setClassroom}
+                  classroom={classroom}
+                />
+              ))
+            }
+            </ItensContainer>
+          </ContentContainer>
+        )
+      }
       <ButtonsContainer>
         <Button
           title={"Salvar"}
