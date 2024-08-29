@@ -9,18 +9,16 @@ import { Button } from "@/components/Button";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login } = useAuth();
-  const router = useRouter();
 
   async function handleLogin() {
     const user = await login(email, password);
     if (user) {
-      router.push("/");
+      window.location.href = "/";
     }
   }
 
