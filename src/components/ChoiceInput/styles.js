@@ -6,6 +6,7 @@ export const InputWrapper = styled.div`
   justify-content: center;
   align-items: center;
   gap: 1.6rem;
+  width: 100%;
 
   > div {
     flex: 1;

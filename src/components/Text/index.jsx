@@ -27,7 +27,7 @@ export function Text({ index, text, updateClassroom, classroom }) {
 
   function handleTextClick() {
     if(user?.role === roles.STUDENT) {
-      router.push(`/student/text/${text.id}`);
+      router.push(`/student/text/${classroom.id}/${text.id}`);
     }
   }
 

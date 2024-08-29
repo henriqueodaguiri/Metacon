@@ -12,7 +12,7 @@ export function UndoneText({ index, text }) {
   const textCover = text?.coverUrl ? `${text.coverUrl}` : textPlaceholder;
 
   function handleTextClick() {
-    router.push(`/student/text/${text.id}`);
+    router.push(`/student/text/${text.classId}/${text.id}`);
   }
 
   return (

@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const Container = styled.label`
   display: flex;
   align-items: center;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
 `;
 
 export const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
@@ -25,13 +25,14 @@ export const StyledCheckbox = styled.div`
   height: 2rem;
   border-radius: 4px;
   transition: all 150ms;
-  border: 2px solid ${({ theme }) => theme.COLORS.PURPLE};
+  border: 2px solid ${({ theme, disabled }) => (disabled ? theme.COLORS.GRAY : theme.COLORS.PURPLE)};
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
 
   ${HiddenCheckbox}:focus + & {
-    box-shadow: 0 0 0 3px ${({ theme }) => theme.COLORS.VIOLET};
+    box-shadow: ${({ theme, disabled }) => !disabled && `0 0 0 3px ${theme.COLORS.VIOLET}`};
   }
 `;
 
@@ -39,6 +40,6 @@ export const IconWrapper = styled.div`
   font-size: 1.6rem;
 
   > svg {
-    color: ${({ theme }) => theme.COLORS.PURPLE};
+    color: ${({ theme, disabled }) => (disabled ? theme.COLORS.GRAY : theme.COLORS.PURPLE)};
   }
 `;
