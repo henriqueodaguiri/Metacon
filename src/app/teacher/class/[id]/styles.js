@@ -7,6 +7,24 @@ export const Container = styled.div`
   } 
 `;
 
+export const HeaderContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 2rem;
+
+  > h2 {
+    flex: 1;
+    text-align: center;
+  }
+
+  > svg {
+    color: ${({ theme }) => theme.COLORS.PURPLE };
+    cursor: pointer;
+  }
+`;
+
 export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -22,10 +40,6 @@ export const ContentContainer = styled.div`
 
   h1 {
     margin-bottom: 4rem;
-  }
-  
-  h2 {
-    margin-bottom: 2rem;
   }
 `;
 

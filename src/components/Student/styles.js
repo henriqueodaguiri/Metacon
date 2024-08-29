@@ -38,6 +38,12 @@ export const ContentContainer = styled.div`
 
   > p {
     text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  span {
+    color: ${({ theme, $grade }) => Number($grade) >= 6 ? theme.COLORS.GREEN : theme.COLORS.DARK_RED };
+    font-weight: 600;
   }
 `;
 

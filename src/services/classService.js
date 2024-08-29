@@ -2,6 +2,7 @@ import generateRandomCode from "@/lib/generateRandomCode";
 import roles from "@/lib/roles";
 const AppError = require("@/lib/appError");
 const prisma = require("@/lib/prisma");
+const XLSX = require("xlsx");
 
 const getByName = async (name, userId) => {
   if(!name) {
@@ -152,6 +153,57 @@ const removeText = async (classId, textId, teacherId) => {
       }
     }
   });
+};
+
+const createExcel = async (classId, teacherId) => {
+  const classroom = await prisma.class.findFirst({
+    where: {
+      id: classId
+    }
+  });
+
+  if(!classroom) {
+    throw new AppError("Turma não encontrada!", 404);
+  }
+
+  if(classroom.teacherId !== teacherId) {
+    throw new AppError("Você não é o professor da turma!", 404);
+  }
+
+  const students = await prisma.user.findMany({
+    where: {
+      classUser: {
+        some: {
+          classId: classId,
+        },
+      },
+    },
+    select: {
+      name: true,
+      email: true,
+      grade: true,
+    },
+  });
+
+  if (students.length === 0) {
+    throw new AppError("Nenhum estudante encontrado nesta turma!", 404);
+  }
+
+  const studentsFormatted = students.map(s => ({
+    "Nome": s.name,
+    "E-mail": s.email,
+    "Nota": s.grade,
+  }));
+  const worksheet = XLSX.utils.json_to_sheet(studentsFormatted);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, classroom.name);
+
+  const excelBuffer = XLSX.write(workbook, {
+    bookType: "xlsx",
+    type: "buffer",
+  });
+
+  return excelBuffer;
 };
 
 const addText = async (classId, textId, teacherId) => {
@@ -381,5 +433,6 @@ module.exports = {
   deleteById,
   removeStudent,
   removeText,
-  addText
+  addText,
+  createExcel
 };

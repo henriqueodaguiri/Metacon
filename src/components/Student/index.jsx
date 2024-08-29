@@ -59,7 +59,7 @@ export function Student({ index, student, setClassroom, classroom }) {
   return (
     <Container $index={index}>
       <StudentContainer>
-        <ContentContainer>
+        <ContentContainer $grade={student.grade}>
           <AvatarContainer>
             <Image
             src={studentAvatarUrl} 
@@ -69,12 +69,20 @@ export function Student({ index, student, setClassroom, classroom }) {
             priority
             />
           </AvatarContainer>
-          <p>{student.name}</p>
+          <p>
+            {student.name} {student.grade && "- Nota: "}
+            {student.grade && <span>{student.grade}</span>}
+          </p>
         </ContentContainer>
         <ContentContainer>
-        <ToggleButton onClick={() => setShowPerformance(!showPerformance)}>
-            {showPerformance ? <FaEyeSlash /> : <FaEye />}
-          </ToggleButton>
+          {
+            student.performances && 
+            student.performances.length > 0 && (
+              <ToggleButton onClick={() => setShowPerformance(!showPerformance)}>
+                {showPerformance ? <FaEyeSlash /> : <FaEye />}
+              </ToggleButton>
+            )
+          }
           <FaTrashAlt onClick={handleDelete}/> 
         </ContentContainer>
       </StudentContainer>
@@ -96,12 +104,6 @@ export function Student({ index, student, setClassroom, classroom }) {
                   )
                 )
               }
-              <Performance
-                $index={index}
-              >
-                <p>Média: </p>
-                <p>{student.grade}</p>
-              </Performance>
             </PerformanceContainer>
           )
       }

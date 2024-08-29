@@ -12,6 +12,16 @@ const show = async (classId, userId) => {
   return createResponse({ body: { classroom }, status: 200 });
 };
 
+const exportExcel = async (classId, userId) => {
+  const excelBuffer = await classService.createExcel(classId, userId);
+  return new Response(excelBuffer, {
+    headers: {
+      "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "Content-Disposition": `attachment; filename="class_${classId}.xlsx"`,
+    },
+  });
+};
+
 const destroy = async (classId, userId) => {
   await classService.deleteById(classId, userId);
   return createResponse({ body: { message: "Inativado com sucesso!"}, status: 200 });
@@ -60,5 +70,6 @@ module.exports = {
   destroy,
   removeStudent,
   removeText,
-  addText
+  addText,
+  exportExcel
 };

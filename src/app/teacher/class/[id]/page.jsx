@@ -11,7 +11,8 @@ import {
   ModalButtonsContent,
   AccessKeyContainer,
   AccessKeyWrapper,
-  ItensContainer
+  ItensContainer,
+  HeaderContainer
 } from "./styles";
 import { Header } from "@/components/Header";
 import { Input } from "@/components/Input";
@@ -25,6 +26,7 @@ import { toast } from "react-toastify";
 import { api } from "@/lib/api";
 import Modal from "react-modal";
 import { useTheme } from "styled-components";
+import { FaFileExcel } from "react-icons/fa";
 
 const EditClass = () => {
   const theme = useTheme();
@@ -100,6 +102,25 @@ const EditClass = () => {
         toast.error("Não foi possível atualizar");
       }
     } 
+  }
+
+  async function handleExportExcel() {
+    try {
+      const response = await api.get(`/classes/${id}/export`, {
+        responseType: "blob",
+      });
+  
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `${classroom.name}.xlsx`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      console.error("Erro ao exportar a planilha:", error);
+      toast.error("Não foi possível exportar");
+    }
   }
 
   useEffect(() => {
@@ -188,7 +209,10 @@ const EditClass = () => {
       {
         classroom?.students && classroom?.students.length > 0 && (
           <ContentContainer>
-            <h2>Alunos</h2>
+            <HeaderContainer>
+              <h2>Alunos</h2>
+              <FaFileExcel size={40} onClick={handleExportExcel}/>
+            </HeaderContainer>
             <ItensContainer>
             {
               classroom.students.map((s, i) => (
