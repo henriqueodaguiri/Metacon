@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "6c193e84-6507-4300-81e8-0f3a27ddef80",
 		"name": "MetaReading",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "20153371"
 	},
 	"item": [
@@ -23,7 +23,16 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/users"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/users",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
 					},
 					"response": []
 				},
@@ -41,7 +50,16 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/users"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/users",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
 					},
 					"response": []
 				},
@@ -62,7 +80,47 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/uploads/5e5424ac98718b9183bd-foto 4.jpg"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/uploads/5e5424ac98718b9183bd-foto 4.jpg",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"uploads",
+								"5e5424ac98718b9183bd-foto 4.jpg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetStudentUndoneTexts",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/users/undoneTexts",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"undoneTexts"
+							]
+						}
 					},
 					"response": []
 				},
@@ -81,7 +139,17 @@
 								}
 							]
 						},
-						"url": "{{NEXT_URL_API}}/api/users/avatar"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/users/avatar",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"avatar"
+							]
+						}
 					},
 					"response": []
 				}
@@ -104,7 +172,16 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/texts"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/texts",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"texts"
+							]
+						}
 					},
 					"response": []
 				},
@@ -158,7 +235,17 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/texts/1"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/texts/1",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"texts",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -179,7 +266,17 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/texts/1"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/texts/1",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"texts",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -200,7 +297,18 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/classes/1/export"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/classes/1/export",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"classes",
+								"1",
+								"export"
+							]
+						}
 					},
 					"response": []
 				},
@@ -218,7 +326,17 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/texts/2"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/texts/2",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"texts",
+								"2"
+							]
+						}
 					},
 					"response": []
 				},
@@ -239,7 +357,16 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/uploads/f25d80fccb1032efa6fe-o pequeno principe.jpg"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/uploads/f25d80fccb1032efa6fe-o pequeno principe.jpg",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"uploads",
+								"f25d80fccb1032efa6fe-o pequeno principe.jpg"
+							]
+						}
 					},
 					"response": []
 				},
@@ -258,7 +385,18 @@
 								}
 							]
 						},
-						"url": "{{NEXT_URL_API}}/api/texts/cover/1"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/texts/cover/1",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"texts",
+								"cover",
+								"1"
+							]
+						}
 					},
 					"response": []
 				}
@@ -281,7 +419,16 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/classes"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/classes",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"classes"
+							]
+						}
 					},
 					"response": []
 				},
@@ -335,7 +482,17 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/classes/1"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/classes/1",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"classes",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -353,7 +510,19 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/classes/1/student/2"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/classes/1/student/2",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"classes",
+								"1",
+								"student",
+								"2"
+							]
+						}
 					},
 					"response": []
 				},
@@ -371,7 +540,19 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/classes/1/text/1"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/classes/1/text/1",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"classes",
+								"1",
+								"text",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -389,7 +570,19 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/classes/1/text/2"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/classes/1/text/2",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"classes",
+								"1",
+								"text",
+								"2"
+							]
+						}
 					},
 					"response": []
 				},
@@ -407,7 +600,18 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/classes/1/text"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/classes/1/text",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"classes",
+								"1",
+								"text"
+							]
+						}
 					},
 					"response": []
 				},
@@ -425,7 +629,17 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/classes/join"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/classes/join",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"classes",
+								"join"
+							]
+						}
 					},
 					"response": []
 				},
@@ -446,7 +660,17 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/classes/1"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/classes/1",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"classes",
+								"1"
+							]
+						}
 					},
 					"response": []
 				},
@@ -464,7 +688,17 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/classes/1"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/classes/1",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"classes",
+								"1"
+							]
+						}
 					},
 					"response": []
 				}
@@ -487,7 +721,16 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/session"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/session",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"session"
+							]
+						}
 					},
 					"response": []
 				},
@@ -508,7 +751,16 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/session"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/session",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"session"
+							]
+						}
 					},
 					"response": []
 				},
@@ -526,7 +778,16 @@
 								}
 							}
 						},
-						"url": "{{NEXT_URL_API}}/api/session"
+						"url": {
+							"raw": "{{NEXT_URL_API}}/api/session",
+							"host": [
+								"{{NEXT_URL_API}}"
+							],
+							"path": [
+								"api",
+								"session"
+							]
+						}
 					},
 					"response": []
 				}
